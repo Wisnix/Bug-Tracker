@@ -1,0 +1,40 @@
+<div class="container">
+  <form [formGroup]="ticketForm" (ngSubmit)="onNewTicket()">
+    <div>
+      <mat-form-field class="header" appearance="outline">
+        <mat-label>Title</mat-label>
+        <input matInput type="text" placeholder="Title" name="title" formControlName="title" />
+      </mat-form-field>
+      <mat-form-field class="header" appearance="outline">
+        <mat-label>Project</mat-label>
+        <mat-select matNativeControl name="project" id="project" formControlName="project">
+          <mat-option value="Test">Test</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field class="textarea" appearance="outline">
+        <mat-label>Description</mat-label>
+        <textarea matInput name="description" id="description" cols="30" rows="10" formControlName="description"></textarea>
+      </mat-form-field>
+    </div>
+    <div>
+      <ngx-dropzone class="dropzone" (change)="onSelect($event)">
+        <ngx-dropzone-label>Click or drop your files here</ngx-dropzone-label>
+        <ngx-dropzone-preview *ngFor="let f of files" [removable]="true" (removed)="onRemove(f)">
+          <ngx-dropzone-label>{{ f.name }}</ngx-dropzone-label>
+        </ngx-dropzone-preview>
+      </ngx-dropzone>
+    </div>
+    <div formArrayName="devResources">
+      <div [formGroupName]="i" *ngFor="let dev of controls; let i = index">
+        <mat-form-field appearance="outline">
+          <input matInput type="text" placeholder="Developer" formControlName="developer" />
+        </mat-form-field>
+        <button mat-icon-button class="green-icon-button" type="button" (click)="onAddDeveloper()"><mat-icon>add_circle</mat-icon></button>
+        <button mat-icon-button class="red-icon-button" type="button" (click)="onDeleteDeveloper(i)"><mat-icon>clear</mat-icon></button>
+      </div>
+    </div>
+    <button mat-raised-button class="green-button">Create New Ticket</button>
+  </form>
+</div>

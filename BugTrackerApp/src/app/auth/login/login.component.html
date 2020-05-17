@@ -1,0 +1,38 @@
+<div class="main-login-container">
+  <div class="login-container">
+    <h2 class="mat-display-2">Log in</h2>
+
+    <form class="example-form" (submit)="onLogin(loginForm)" #loginForm="ngForm">
+      <mat-form-field class="form-input">
+        <mat-label>Email</mat-label>
+        <input matInput placeholder="Email" type="email" name="email" ngModel #email="ngModel" required email />
+        <mat-error *ngIf="email.invalid">Please enter a valid email.</mat-error>
+      </mat-form-field>
+      <mat-form-field class="form-input">
+        <mat-label>Password</mat-label>
+        <input matInput placeholder="Password" type="password" name="password" ngModel #password="ngModel" required />
+        <mat-error *ngIf="password.invalid">Please Enter Password</mat-error>
+      </mat-form-field>
+      <button mat-flat-button type="submit" *ngIf="!isLoading">Log in</button>
+      <mat-spinner *ngIf="isLoading"></mat-spinner>
+    </form>
+
+    <div class="login-links">
+      <ul>
+        <li>
+          <a href="">Forgot your <span class="underline">password?</span></a>
+        </li>
+      </ul>
+      <ul>
+        <li>
+          <a routerLink="/signup">Don't have an account? <span class="underline">Sign up</span></a>
+        </li>
+      </ul>
+      <ul>
+        <li>
+          <a href="">Sign in as <span class="underline">Demo User</span></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

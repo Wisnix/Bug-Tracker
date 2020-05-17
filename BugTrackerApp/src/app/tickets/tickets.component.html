@@ -1,0 +1,20 @@
+<router-outlet></router-outlet>
+<div class="container">
+  <h3>Tickets</h3>
+  <table datatable [dtOptions]="dtOptions" class="row-border hover">
+    <thead>
+      <tr>
+        <th>Ticket Number</th>
+        <th>Title</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let ticket of tickets">
+        <td>{{ ticket.number }}</td>
+        <td>{{ ticket.title }}</td>
+        <td>{{ ticket.status }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

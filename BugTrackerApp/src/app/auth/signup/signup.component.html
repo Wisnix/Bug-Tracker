@@ -1,0 +1,35 @@
+<div class="container">
+  <div class="login-container">
+    <h2 class="mat-display-2">Sign up</h2>
+    <mat-spinner *ngIf="isLoading"></mat-spinner>
+
+    <form class="example-form" (submit)="onSignup(signupForm)" #signupForm="ngForm">
+      <mat-form-field class="form-input">
+        <mat-label>Email</mat-label>
+        <input matInput placeholder="Email" type="email" name="email" ngModel #email="ngModel" required email />
+        <mat-error *ngIf="email.invalid">Please enter a valid email.</mat-error>
+      </mat-form-field>
+      <mat-form-field class="form-input">
+        <mat-label>First Name</mat-label>
+        <input matInput placeholder="First Name" type="text" name="firstName" ngModel #firstName="ngModel" required />
+        <mat-error *ngIf="firstName.invalid">Please enter your First Name.</mat-error>
+      </mat-form-field>
+      <mat-form-field class="form-input">
+        <mat-label>Last Name</mat-label>
+        <input matInput placeholder="Last Name" type="text" name="lastName" ngModel #lastName="ngModel" required />
+        <mat-error *ngIf="lastName.invalid">Please enter your Last NAme.</mat-error>
+      </mat-form-field>
+      <mat-form-field class="form-input">
+        <mat-label>Password</mat-label>
+        <input matInput placeholder="Password" [type]="hide ? 'password' : 'text'" name="password" ngModel #password="ngModel" required />
+        <mat-icon matSuffix (click)="hide = !hide">{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+        <mat-error *ngIf="password.invalid">Please enter password</mat-error>
+      </mat-form-field>
+      <button mat-flat-button type="submit">Sign up</button>
+    </form>
+
+    <div class="login-links">
+      <a routerLink="/login">Already have an account? <span class="underline">Log in</span></a>
+    </div>
+  </div>
+</div>

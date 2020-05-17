@@ -1,0 +1,35 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav
+    #drawer
+    class="sidenav navbar-shadow"
+    fixedInViewport
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="(isHandset$ | async) === false"
+  >
+    <mat-toolbar class="logo-area">
+      <div class="logo"><img src="assets/images/logo.png" alt="BugTrackerLogo" /></div>
+      <div class="welcome">WELCOME <span class="username">User</span></div>
+    </mat-toolbar>
+    <div class="divider"></div>
+    <mat-nav-list id="nav-links">
+      <a mat-list-item routerLink="/dashboard" routerLinkActive="is-active" class="nav-link"> <mat-icon>dashboard</mat-icon>Dashboard</a>
+      <a mat-list-item href="#" class="nav-link"> <mat-icon>person_add</mat-icon>Manage Users</a>
+      <a mat-list-item href="#" class="nav-link"> <mat-icon>supervisor_account</mat-icon>Manage Teams</a>
+      <a mat-list-item href="#" class="nav-link"> <mat-icon>assignment</mat-icon>Projects</a>
+      <a mat-list-item routerLink="/tickets" routerLinkActive="is-active" class="nav-link"> <mat-icon>chrome_reader_mode</mat-icon>Tickets</a>
+      <a mat-list-item href="#" class="nav-link"> <mat-icon>settings</mat-icon>Settings</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar class="navbar-top navbar-shadow">
+      <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <button mat-raised-button type="button" id="new-ticket" (click)="onNewTicket()">New Ticket</button>
+      <span class="spacer"></span>
+      <button mat-button (click)="onLogout()">Logout</button>
+    </mat-toolbar>
+    <ng-content></ng-content>
+  </mat-sidenav-content>
+</mat-sidenav-container>

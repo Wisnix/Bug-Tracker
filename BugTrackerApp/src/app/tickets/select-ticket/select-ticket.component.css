@@ -1,0 +1,65 @@
+.card-content p {
+  color: rgb(56, 56, 56);
+}
+
+ul {
+  list-style: none;
+  padding-left: 0;
+}
+li {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.textarea {
+  width: 100%;
+}
+
+.downloadLink {
+  cursor: pointer;
+}
+
+.comment-header h5,
+.comment-header h6 {
+  display: inline-block;
+}
+.comment-header h5 {
+  font-size: 14px;
+  font-weight: 500;
+  color: rgb(80, 80, 80);
+  margin-right: 10px;
+}
+.comment-header h6 {
+  font-style: italic;
+  font-size: 10px;
+}
+.comment {
+  margin-top: 15px;
+}
+
+/*  GRID  */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-gap: 1em;
+}
+.description {
+  grid-column: 1/6;
+}
+.ticket-details {
+  grid-column: 6/9;
+}
+.comments {
+  grid-column: 1/6;
+}
+.ticket-history {
+  grid-column: 6/9;
+}
+
+table[datatable] thead tr th {
+  border-bottom: 1px solid #dddddd;
+  color: #4e4e4e;
+  font-weight: 400;
+  font-size: 1rem;
+}

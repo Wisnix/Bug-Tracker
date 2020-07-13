@@ -8,6 +8,9 @@ const multer = require("multer");
 //Routes import
 const authRoutes = require("./routes/auth");
 const ticketRoutes = require("./routes/ticket");
+const userRoutes = require("./routes/user");
+const projectRoutes = require("./routes/project");
+const teamRoutes = require("./routes/team");
 
 const app = express();
 
@@ -32,7 +35,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 //Routes
 app.use("/api/auth", authRoutes);
-app.use("/api/ticket", ticketRoutes);
+app.use("/api/tickets", ticketRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/projects", projectRoutes);
+app.use("/api/teams", teamRoutes);
 
 const PORT = process.env.PORT || 5000;
 

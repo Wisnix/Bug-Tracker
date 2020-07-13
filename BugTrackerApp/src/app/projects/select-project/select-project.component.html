@@ -1,0 +1,100 @@
+<div class="container">
+  <mat-card>
+    <div class="card-header card-header-blue">
+      <h3 class="card-header-title">{{ project?.title }}</h3>
+      <p class="card-header-subtitle">Status : {{ project?.status }}</p>
+    </div>
+    <div class="card-content">
+      <div>
+        <p><span class="bold">Project description: </span></p>
+        <p>{{ project?.description }}</p>
+      </div>
+    </div>
+  </mat-card>
+</div>
+
+<div class="container">
+  <mat-card>
+    <div class="card-header card-header-lightblue">
+      <p class="card-header-title">Tickets</p>
+    </div>
+    <div class="card-content">
+      <table datatable [dtOptions]="dtTicketsOptions" [dtTrigger]="dtTrigger" class="row-border hover dt-responsive">
+        <thead>
+          <tr>
+            <th>Ticket ID</th>
+            <th>Title</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let ticket of tickets">
+            <td class="dt-body-center table-link">{{ ticket.number }}</td>
+            <td class="dt-body-center">{{ ticket.title }}</td>
+            <td class="dt-body-center">{{ ticket.status }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </mat-card>
+</div>
+
+<div class="container">
+  <div class="grid">
+    <mat-card>
+      <div class="card-header card-header-lightblue">
+        <p class="card-header-title-sm">
+          Teams
+          <button mat-raised-button class="card-header-button" type="button">Manage Teams</button>
+        </p>
+      </div>
+      <div class="card-content">
+        <table datatable [dtOptions]="dtTeamsOptions" [dtTrigger]="dtTrigger" class="row-border hover teams">
+          <thead>
+            <tr>
+              <th>Team Name</th>
+              <th>Employees</th>
+              <th>Active Tickets</th>
+              <th>Total Tickets</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let team of project?.teams">
+              <td class="dt-body-center">{{ team.name }}</td>
+              <td class="dt-body-center">{{ team.employees.length }}</td>
+              <td class="dt-body-center">OBLICZ tickety dla teamu</td>
+              <td class="dt-body-center">OBLICZ tickety dla teamu</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </mat-card>
+    <mat-card>
+      <div class="card-header card-header-lightblue">
+        <p class="card-header-title-sm">Employees <button mat-raised-button class="card-header-button" type="button">Manage Employees</button></p>
+      </div>
+      <div class="card-content">
+        <div>
+          <table datatable [dtOptions]="dtEmployeesOptions" [dtTrigger]="dtTrigger" class="row-border hover dt-responsive">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Team</th>
+                <th>Role</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let employee of employees">
+                <td class="dt-body-center">{{ employee.firstName }} {{ employee.lastName }}</td>
+                <td class="dt-body-center">{{ employee.email }}</td>
+                <td class="dt-body-center">{{ employee.teamName }}</td>
+                <td class="dt-body-center">{{ employee.role }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+</div>

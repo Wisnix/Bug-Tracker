@@ -1,3 +1,6 @@
+import { Employee } from "../employee/employee.model";
+import { Team } from "../teams/team.model";
+
 export interface Ticket {
   number: number;
   title: string;
@@ -7,4 +10,9 @@ export interface Ticket {
   files: any[];
   createdOn: Date;
   status: string;
+  raisedBy: Employee;
+  comments: Comment[];
+  team: Team;
+  assignedTo: Employee;
+  history: any[];
 }

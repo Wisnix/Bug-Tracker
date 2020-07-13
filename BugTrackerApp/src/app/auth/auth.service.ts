@@ -3,11 +3,14 @@ import { HttpClient } from "@angular/common/http";
 import { AuthData } from "./auth-data.model";
 import { Router } from "@angular/router";
 import { Timestamp } from "rxjs/internal/operators/timestamp";
+import { Project } from "../projects/project.model";
+import { Employee } from "../employee/employee.model";
 
 @Injectable({ providedIn: "root" })
 export class AuthService {
   private tokenTimer: any;
   private isAuthenticated: boolean;
+  loggedEmployee: Employee;
   private token: string;
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -24,7 +27,7 @@ export class AuthService {
 
   login(email: string, password: string) {
     this.http
-      .post<{ token: string; expiresIn: number }>("http://localhost:5000/api/auth/login", { email, password })
+      .post<{ token: string; expiresIn: number; user: Employee }>("http://localhost:5000/api/auth/login", { email, password })
       .subscribe((response) => {
         const token = response.token;
         this.token = token;
@@ -33,10 +36,10 @@ export class AuthService {
           const expiresInDuration = response.expiresIn;
           this.setAuthTimer(expiresInDuration);
           this.isAuthenticated = true;
+          this.loggedEmployee = response.user;
           this.router.navigate(["/"]);
           const expirationDate = new Date(new Date().getTime() + expiresInDuration * 1000);
-          this.saveAuthData(token, expirationDate);
-          console.log(response);
+          this.saveAuthData(token, expirationDate, this.loggedEmployee);
         }
       });
   }
@@ -61,14 +64,16 @@ export class AuthService {
     return this.isAuthenticated;
   }
 
-  private saveAuthData(token: string, expirationDate: Date) {
+  private saveAuthData(token: string, expirationDate: Date, employee: Employee) {
     localStorage.setItem("token", token);
     localStorage.setItem("expiration", expirationDate.toISOString());
+    localStorage.setItem("loggedEmployee", JSON.stringify(employee));
   }
 
   private clearAuthData() {
     localStorage.removeItem("token");
     localStorage.removeItem("expiration");
+    localStorage.removeItem("loggedEmployee");
   }
 
   autoAuthUser() {
@@ -81,6 +86,7 @@ export class AuthService {
     if (expiresInDuration > 0) {
       this.token = authInformation.token;
       this.isAuthenticated = true;
+      this.loggedEmployee = authInformation.employee;
       this.setAuthTimer(expiresInDuration / 1000);
     }
   }
@@ -88,12 +94,14 @@ export class AuthService {
   private getAuthData() {
     const token = localStorage.getItem("token");
     const expirationDate = localStorage.getItem("expiration");
+    const employee = JSON.parse(localStorage.getItem("loggedEmployee"));
     if (!token || !expirationDate) {
       return;
     }
     return {
       token,
       expirationDate: new Date(expirationDate),
+      employee,
     };
   }
 }

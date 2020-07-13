@@ -1,0 +1,53 @@
+<div class="container">
+  <mat-card>
+    <div class="card-header card-header-blue"><h3 class="card-header-title">Edit ticket</h3></div>
+    <div class="card-content">
+      <form [formGroup]="ticketForm" (ngSubmit)="onEditTicket()">
+        <div>
+          <mat-form-field class="header" appearance="outline">
+            <mat-label>Title</mat-label>
+            <input matInput type="text" placeholder="Title" name="title" formControlName="title" />
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field class="assignment" appearance="outline">
+            <mat-label>Select Team</mat-label>
+            <mat-select (selectionChange)="onLoadEmployees($event)" formControlName="team">
+              <mat-option
+                ><ngx-mat-select-search
+                  [formControl]="teamFilterControl"
+                  placeholderLabel="Find team"
+                  noEntriesFoundLabel="No matching team found"
+                ></ngx-mat-select-search
+              ></mat-option>
+              <mat-option *ngFor="let team of filteredTeams | async" [value]="team._id">{{ team.name }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="assignment" appearance="outline">
+            <mat-label>Select Employee</mat-label>
+            <mat-select formControlName="assignedTo">
+              <mat-option
+                ><ngx-mat-select-search
+                  [formControl]="employeeFilterControl"
+                  placeholderLabel="Find employee"
+                  noEntriesFoundLabel="No matching employee found"
+                ></ngx-mat-select-search
+              ></mat-option>
+              <mat-option *ngFor="let employee of filteredEmployees | async" [value]="employee._id"
+                >{{ employee.firstName }} {{ employee.lastName }} <span class="email">{{ employee.email }}</span></mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field class="textarea" appearance="outline">
+            <mat-label>Description</mat-label>
+            <textarea matInput name="description" id="description" cols="30" rows="10" formControlName="description"></textarea>
+          </mat-form-field>
+        </div>
+        <button mat-raised-button>Update Ticket</button>
+      </form>
+    </div>
+  </mat-card>
+</div>
+<button (click)="test()">test</button>

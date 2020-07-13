@@ -14,8 +14,10 @@ const routes: Routes = [
     component: MainComponent,
     children: [
       { path: "tickets", loadChildren: () => import("./tickets/tickets.module").then((m) => m.TicketsModule) },
+      { path: "projects", loadChildren: () => import("./projects/projects.module").then((m) => m.ProjectsModule) },
       { path: "dashboard", component: DashboardComponent },
     ],
+    // to na dole se skomentowalem dla testowania zeby bylo latwej
     // canActivate: [AuthGuard],
   },
 ];

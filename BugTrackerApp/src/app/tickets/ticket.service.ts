@@ -1,38 +1,42 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { Subject } from "rxjs";
+import { Subject, Observable } from "rxjs";
 import { Ticket } from "./ticket.model";
-import { AuthService } from "../auth/auth.service";
+import { Router } from "@angular/router";
 
 @Injectable({ providedIn: "root" })
 export class TicketService {
-  tickets: Ticket[] = [];
-  ticketsUpdated = new Subject<Ticket[]>();
   constructor(private http: HttpClient) {}
 
   getTickets() {
-    this.http.get<Ticket[]>("http://localhost:5000/api/ticket").subscribe((tickets) => {
-      this.tickets = [...tickets];
-      this.ticketsUpdated.next([...tickets]);
-    });
+    return this.http.get<Ticket[]>("http://localhost:5000/api/tickets");
+  }
+  getTicket(number: number) {
+    return this.http.get<Ticket>(`http://localhost:5000/api/tickets/${number}`);
   }
 
-  createTicket(ticket: Ticket) {
+  addComment(number: number, comment: String) {
+    return this.http.post<{ message: String; comment: Comment; ticketHistory }>(`http://localhost:5000/api/tickets/${number}/comments`, { comment });
+  }
+
+  getFile(number: number, fileName: String) {
+    // this.http.get(`http://localhost:5000/api/tickets/${number}/files/${fileName}`).subscribe();
+  }
+
+  createTicket(ticket) {
     const ticketData = new FormData();
     ticketData.append("title", ticket.title);
     ticketData.append("project", ticket.project);
     ticketData.append("description", ticket.description);
-    ticketData.append("devResources", JSON.stringify(ticket.devResources));
+    ticketData.append("assignedTo", ticket.assignedTo);
+    ticketData.append("team", ticket.team);
     for (let file of ticket.files) {
       ticketData.append("files", file.file);
     }
-    console.log(ticketData);
-    this.http.post<{ message: string; ticket: Ticket }>("http://localhost:5000/api/ticket", ticketData).subscribe((res) => {
-      console.log(res.ticket);
-    });
+    return this.http.post<{ message: string; ticket: Ticket }>("http://localhost:5000/api/tickets", ticketData);
   }
 
-  getTicketsUpdatedListener() {
-    return this.ticketsUpdated.asObservable();
+  updateTicket(number: number, changes: any[]) {
+    return this.http.patch(`http://localhost:5000/api/tickets/${number}`, { changes });
   }
 }

@@ -1,0 +1,99 @@
+<div class="container">
+  <mat-card>
+    <div class="card-header card-header-green"><h3 class="card-header-title">Create New Project</h3></div>
+    <div class="card-content">
+      <form class="ticket-form" [formGroup]="projectForm" (ngSubmit)="onNewProject()">
+        <mat-horizontal-stepper>
+          <mat-step
+            ><ng-template matStepLabel>Fill out project description</ng-template>
+            <!-- STEP 1 -->
+            <div>
+              <mat-form-field appearance="outline">
+                <mat-label>Title</mat-label>
+                <input matInput type="text" placeholder="Title" name="title" formControlName="title" />
+              </mat-form-field>
+            </div>
+            <div>
+              <mat-form-field appearance="outline">
+                <mat-label>Description</mat-label>
+                <textarea matInput name="description" id="description" cols="30" rows="10" formControlName="description"></textarea>
+              </mat-form-field>
+            </div>
+            <div>
+              <button mat-raised-button matStepperNext type="button">Next</button>
+            </div>
+          </mat-step>
+          <mat-step
+            ><ng-template matStepLabel>Create teams</ng-template>
+            <!-- STEP 2 -->
+            <div formArrayName="teams">
+              <div [formGroupName]="i" *ngFor="let team of controls; let i = index">
+                <mat-form-field class="team" appearance="outline">
+                  <input matInput type="text" placeholder="Create Team" formControlName="name" />
+                </mat-form-field>
+                <button mat-icon-button class="green-icon-button" type="button" (click)="onAddTeam()"><mat-icon>add_circle</mat-icon></button>
+                <button mat-icon-button class="red-icon-button" type="button" (click)="onDeleteTeam(i)"><mat-icon>clear</mat-icon></button>
+              </div>
+            </div>
+            <div>
+              <button mat-raised-button matStepperNext type="button">Next</button>
+            </div>
+          </mat-step>
+          <mat-step
+            ><ng-template matStepLabel>Add employees</ng-template>
+            <!-- STEP 3 -->
+            <div *ngFor="let team of controls; let teamIndex = index">
+              <mat-expansion-panel *ngIf="team.value.name" (opened)="onExpansionPanelOpened()" (closed)="onExpansionPanelClosed(teamIndex)">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    {{ team.value.name }}
+                  </mat-panel-title>
+                  <mat-panel-description> Add employees to the team {{ team.value.name }} </mat-panel-description>
+                </mat-expansion-panel-header>
+                <div class="add-employees">
+                  <div>
+                    <mat-form-field>
+                      <mat-label>Find employee</mat-label>
+                      <input matInput (input)="filterEmployees(searchEmployee.value, teamIndex)" autocomplete="off" #searchEmployee />
+                    </mat-form-field>
+                    <mat-action-list dense>
+                      <button
+                        mat-list-item
+                        *ngFor="let employee of filteredEmployees[teamIndex]; let employeeIndex = index"
+                        (click)="onAddEmployeeToTeam(employee, teamIndex)"
+                      >
+                        {{ employee.firstName }} {{ employee.lastName }} <span class="email"> {{ employee.email }}</span
+                        ><mat-icon mat-list-icon>add</mat-icon>
+                      </button>
+                    </mat-action-list>
+                  </div>
+                  <div>
+                    <mat-list dense>
+                      <mat-list-item *ngFor="let employee of assignedEmployees[teamIndex]; let assignedEmployeeIndex = index">
+                        <mat-icon mat-list-icon (click)="onDeleteEmployeeFromTeam(employee, teamIndex, assignedEmployeeIndex)">clear</mat-icon>
+                        {{ employee.firstName }} {{ employee.lastName }} <span class="email">{{ employee.email }}</span>
+                        <mat-form-field class="select-role">
+                          <mat-select
+                            (selectionChange)="onChangeEmployeeRole(teamIndex, assignedEmployeeIndex, selectRole)"
+                            [(value)]="employee.role"
+                            #selectRole
+                          >
+                            <mat-option value="Developer" selected>Developer</mat-option>
+                            <mat-option value="Tester">Tester</mat-option>
+                            <mat-option value="Project Manager">Project Manager</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </mat-list-item>
+                    </mat-list>
+                  </div>
+                </div>
+              </mat-expansion-panel>
+            </div>
+            <button mat-raised-button class="green-button create-project">Create Project</button>
+          </mat-step>
+        </mat-horizontal-stepper>
+      </form>
+    </div>
+  </mat-card>
+</div>
+<button (click)="test()">test</button>

@@ -1,0 +1,17 @@
+.header {
+  width: 99%;
+}
+.textarea {
+  width: 99%;
+}
+.assignment {
+  width: 49%;
+}
+mat-form-field.mat-form-field {
+  margin-right: 1%;
+}
+.dropzone {
+  height: 80px;
+  font-size: 14px;
+  margin-bottom: 15px;
+}

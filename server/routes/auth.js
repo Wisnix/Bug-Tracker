@@ -27,6 +27,7 @@ router.post("/signup", (req, res, next) => {
 router.post("/login", (req, res, next) => {
   let fetchedUser;
   User.findOne({ email: req.body.email })
+    .populate({ path: "team", select: "_id name project", populate: { path: "project", select: "_id title" } })
     .then((user) => {
       if (!user) {
         return res.status(401).json({ message: "Authentication failed" });
@@ -39,11 +40,11 @@ router.post("/login", (req, res, next) => {
         return res.status(401).json({ message: "Authentication failed" });
       }
       const token = jwt.sign(
-        { email: fetchedUser.email, firstName: fetchedUser.firstName, userId: fetchedUser._id },
+        { email: fetchedUser.email, firstName: fetchedUser.firstName, userId: fetchedUser._id, role: fetchedUser.role },
         "Super secret message only for development: Seals are like dogs but underwater dogs.",
         { expiresIn: "1h" }
       );
-      res.status(200).json({ token, expiresIn: 3600 });
+      res.status(200).json({ token, expiresIn: 3600, user: fetchedUser });
     })
     .catch((error) => {
       return res.status(401).json({ message: "Authentication failed", error });

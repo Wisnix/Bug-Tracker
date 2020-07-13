@@ -23,6 +23,10 @@ import { TicketsComponent } from "./tickets/tickets.component";
 import { AuthInterceptor } from "./auth/auth-interceptor";
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { TicketsModule } from "./tickets/tickets.module";
+import { MatGridListModule } from "@angular/material/grid-list";
+import { MatCardModule } from "@angular/material/card";
+import { MatMenuModule } from "@angular/material/menu";
+import { ProjectsModule } from "./projects/projects.module";
 
 @NgModule({
   declarations: [AppComponent, NavigationComponent, LoginComponent, MainComponent, SignupComponent, DashboardComponent],
@@ -42,6 +46,10 @@ import { TicketsModule } from "./tickets/tickets.module";
     FormsModule,
     HttpClientModule,
     TicketsModule,
+    ProjectsModule,
+    MatGridListModule,
+    MatCardModule,
+    MatMenuModule,
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   bootstrap: [AppComponent],

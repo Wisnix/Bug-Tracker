@@ -1,6 +1,13 @@
 import { Component, OnInit } from "@angular/core";
-import { NgForm, FormGroup, FormControl, Validators, FormArray } from "@angular/forms";
+import { FormGroup, FormControl, Validators, FormArray } from "@angular/forms";
 import { TicketService } from "../ticket.service";
+import { AuthService } from "src/app/auth/auth.service";
+import { Subscription, ReplaySubject } from "rxjs";
+import { TeamService } from "src/app/teams/team.service";
+import { Team } from "src/app/teams/team.model";
+import { Employee } from "src/app/employee/employee.model";
+import { EmployeeService } from "src/app/employee/employee.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-new-ticket",
@@ -8,52 +15,62 @@ import { TicketService } from "../ticket.service";
   styleUrls: ["./new-ticket.component.css"],
 })
 export class NewTicketComponent implements OnInit {
+  projectId: string;
   files = [];
+  teams: Team[] = [];
+  filteredTeams: ReplaySubject<Team[]> = new ReplaySubject<Team[]>();
+  teamFilterControl: FormControl = new FormControl();
+  teamsSubscription: Subscription;
+  employees: Employee[] = [];
+  filteredEmployees: ReplaySubject<Employee[]> = new ReplaySubject<Employee[]>();
+  employeeFilterControl: FormControl = new FormControl();
+
   ticketForm: FormGroup;
-  constructor(private ticketService: TicketService) {}
+  constructor(
+    private ticketService: TicketService,
+    private authService: AuthService,
+    private teamService: TeamService,
+    private employeeService: EmployeeService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
+    this.projectId = this.authService.loggedEmployee.team.project._id;
+    this.teamsSubscription = this.teamService.getTeams(this.projectId).subscribe((teams) => {
+      this.teams = teams;
+      this.filteredTeams.next(this.teams.slice());
+    });
+
+    this.teamFilterControl.valueChanges.subscribe(() => {
+      this.filterTeams();
+    });
+    this.employeeFilterControl.valueChanges.subscribe(() => {
+      this.filterEmployees();
+    });
     this.initForm();
   }
 
   private initForm() {
     this.ticketForm = new FormGroup({
       title: new FormControl("", [Validators.required]),
-      project: new FormControl("", [Validators.required]),
+      project: new FormControl(this.projectId),
       description: new FormControl("", [Validators.required]),
-      devResources: new FormArray([
-        new FormGroup({
-          developer: new FormControl(""),
-        }),
-      ]),
+      team: new FormControl("", [Validators.required]),
+      assignedTo: new FormControl("", [Validators.required]),
       files: new FormArray([]),
     });
   }
 
-  get controls() {
-    return (<FormArray>this.ticketForm.get("devResources")).controls;
-  }
-
   onNewTicket() {
-    if (this.ticketForm.valid) this.ticketService.createTicket(this.ticketForm.value);
+    console.log(this.ticketForm.valid);
+    console.log(this.ticketForm.value);
+    if (this.ticketForm.valid)
+      this.ticketService.createTicket(this.ticketForm.value).subscribe((res) => {
+        if (res.ticket) {
+          this.router.navigate(["tickets/", res.ticket.number]);
+        }
+      });
   }
-
-  onAddDeveloper() {
-    (<FormArray>this.ticketForm.get("devResources")).push(
-      new FormGroup({
-        developer: new FormControl(""),
-      })
-    );
-  }
-
-  onDeleteDeveloper(index: number) {
-    if (index === 0) {
-      (<FormArray>this.ticketForm.get("devResources")).controls[0].get("developer").setValue("");
-      return;
-    }
-    (<FormArray>this.ticketForm.get("devResources")).removeAt(index);
-  }
-
   onSelect(event) {
     for (let file of event.addedFiles) {
       const newFile = new FormControl({ file });
@@ -61,7 +78,6 @@ export class NewTicketComponent implements OnInit {
     }
     this.files.push(...event.addedFiles);
   }
-
   onRemove(event) {
     console.log(event);
     this.files.splice(this.files.indexOf(event), 1);
@@ -71,5 +87,38 @@ export class NewTicketComponent implements OnInit {
       const newFile = new FormControl({ file });
       (<FormArray>this.ticketForm.get("files")).push(newFile);
     }
+  }
+  onLoadEmployees(event) {
+    this.employeeService.findEmployeesByTeam(event.value).subscribe((employees) => {
+      this.employees = employees;
+      this.filteredEmployees.next(this.employees.slice());
+    });
+  }
+  private filterTeams() {
+    if (!this.teams) {
+      return;
+    }
+    let search = this.teamFilterControl.value;
+    if (!search) {
+      this.filteredTeams.next(this.teams.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    this.filteredTeams.next(this.teams.filter((team) => team.name.toLowerCase().indexOf(search) > -1));
+  }
+
+  private filterEmployees() {
+    if (!this.employees) {
+      return;
+    }
+    let search = this.employeeFilterControl.value;
+    if (!search) {
+      this.filteredEmployees.next(this.employees.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    this.filteredEmployees.next(this.employeeService.filterEmployeesArray(this.employees, search));
   }
 }

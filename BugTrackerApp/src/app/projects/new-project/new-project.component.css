@@ -1,0 +1,25 @@
+.mat-form-field {
+  width: 100%;
+}
+.team {
+  width: 80%;
+}
+.add-employees {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 1em;
+  max-height: 300px;
+}
+
+mat-icon {
+  cursor: pointer;
+}
+.create-project {
+  margin-top: 10px;
+}
+.select-role {
+  width: 20%;
+  text-align: right;
+  margin-left: auto;
+  color: rgb(102, 102, 102);
+}

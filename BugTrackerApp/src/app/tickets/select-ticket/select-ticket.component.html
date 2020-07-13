@@ -1,1 +1,93 @@
-<p>select-ticket works!</p>
+<div class="container" *ngIf="!isLoading">
+  <mat-card class="card">
+    <div class="card-header card-header-blue">
+      <h3 class="card-header-title">
+        [ {{ ticket.number }} ] {{ ticket.title }}
+        <button (click)="editTicket()" mat-raised-button class="card-header-button" type="button">Edit Ticket</button>
+      </h3>
+      <p class="card-header-subtitle">Raised on: {{ ticket.createdOn | date: "medium" }}</p>
+    </div>
+    <div class="card-content">
+      <div class="grid">
+        <div class="description">
+          <p><span class="bold">Description:</span></p>
+          <p>
+            {{ ticket.description }}
+          </p>
+        </div>
+        <div class="ticket-details">
+          <div class="ticket-details-section">
+            <p><span class="bold">Raised by:</span></p>
+            <p>{{ ticket.raisedBy.firstName }} {{ ticket.raisedBy.lastName }}</p>
+          </div>
+          <hr />
+          <div class="ticket-details-section">
+            <p><span class="bold">Assigned to:</span></p>
+            <p>
+              {{ ticket.assignedTo.firstName }} {{ ticket.assignedTo.lastName }} <span class="email">{{ ticket.assignedTo.email }}</span>
+            </p>
+          </div>
+          <hr />
+          <div class="ticket-details-section">
+            <p><span class="bold">Status:</span></p>
+            <p>{{ ticket.status }}</p>
+          </div>
+          <hr />
+          <p><span class="bold">Attachments:</span></p>
+          <ul *ngIf="ticket.files.length > 0; else elseBlock">
+            <li *ngFor="let file of ticket.files">
+              {{ file.filename }}<mat-icon class="downloadLink" (click)="onDownloadFile(file._id)">archive</mat-icon>
+            </li>
+          </ul>
+          <ng-template #elseBlock><p>This ticket does not have any files attached.</p></ng-template>
+          <hr />
+        </div>
+        <div class="comments">
+          <p><span class="bold">Comments:</span></p>
+          <form (ngSubmit)="onNewComment()">
+            <mat-form-field class="textarea" appearance="outline">
+              <textarea matInput name="description" id="description" rows="3" placeholder="Add a comment." [formControl]="comment"></textarea>
+            </mat-form-field>
+            <button mat-raised-button type="submit">Add Comment</button>
+          </form>
+          <div class="comment" *ngFor="let comment of ticket.comments">
+            <div class="comment-header">
+              <h5>{{ comment.author.firstName }} {{ comment.author.lastName }}</h5>
+              <h6>{{ comment.createdOn | timeAgo }}</h6>
+            </div>
+            <p>{{ comment.content }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+</div>
+<div class="container" *ngIf="!isLoading">
+  <mat-card class="card">
+    <div class="card-header card-header-blue">
+      <h3 class="card-header-title">Ticket History</h3>
+    </div>
+    <div class="card-content">
+      <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover dt-responsive">
+        <thead>
+          <tr>
+            <th>Attribute</th>
+            <th>Changed By</th>
+            <th>New Value</th>
+            <th>Old Value</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let history of ticket.history">
+            <td class="dt-body-center">{{ history.attribute | historyTitle }}</td>
+            <td class="dt-body-center">{{ history.changedBy.firstName }} {{ history.changedBy.lastName }}</td>
+            <td class="dt-body-center">{{ history.newValue }}</td>
+            <td class="dt-body-center">{{ history.oldValue }}</td>
+            <td class="dt-body-center">{{ history.dateTime | date: "medium" }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </mat-card>
+</div>

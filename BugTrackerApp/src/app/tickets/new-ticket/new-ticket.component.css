@@ -1,8 +1,11 @@
 .header {
-  width: 49%;
+  width: 99%;
 }
 .textarea {
   width: 99%;
+}
+.assignment {
+  width: 49%;
 }
 mat-form-field.mat-form-field {
   margin-right: 1%;
@@ -10,6 +13,7 @@ mat-form-field.mat-form-field {
 .dropzone {
   height: 80px;
   font-size: 14px;
+  margin-bottom: 15px;
 }
 ngx-dropzone-preview {
   min-width: 40px !important;

@@ -14,8 +14,8 @@ body {
 /* =========================== */
 
 .container {
-  width: 80%;
-  margin: 20px auto;
+  width: 95%;
+  margin: 30px auto;
 }
 
 /* =========================== */
@@ -32,4 +32,112 @@ body {
 .green-button {
   background: #5cb85c;
   color: #fff;
+}
+
+/* =========================== */
+/* CARD SECTION */
+/* =========================== */
+mat-card {
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14) !important;
+}
+.card {
+  margin-top: 30px;
+  margin-bottom: 15px;
+}
+.card-header-button {
+  float: right;
+}
+.card-header .card-header-title {
+  margin: 0;
+  margin-bottom: 3px;
+  font-size: 1.5rem;
+  font-weight: 300;
+}
+.card-header .card-header-subtitle {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 300;
+}
+.card-header .card-header-title-sm {
+  font-size: 1.1rem;
+  margin: 0 0;
+}
+.card-header {
+  border-radius: 3px;
+  margin-top: -30px !important;
+  padding: 15px;
+  margin: 0 15px;
+  color: #fff;
+}
+.card-header-green {
+  background: linear-gradient(60deg, #66bb6a, #43a047);
+  box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(76, 175, 80, 0.4);
+}
+.card-header-orange {
+  background: linear-gradient(60deg, #ffa726, #fb8c00);
+  box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(255, 152, 0, 0.4);
+}
+.card-header-purple {
+  background: linear-gradient(60deg, #ab47bc, #8e24aa);
+  box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(156, 39, 176, 0.4);
+}
+.card-header-blue {
+  background: linear-gradient(60deg, #54a0ff, #4490ee);
+  box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(31, 74, 167, 0.4);
+}
+.card-header-lightblue {
+  background: linear-gradient(60deg, #87bcff, #76b3ff);
+  box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(31, 74, 167, 0.4);
+}
+.card-header-red {
+  background: linear-gradient(60deg, #ef5350, #e53935);
+  box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(244, 67, 54, 0.4);
+}
+.card-content {
+  padding: 1rem 20px;
+}
+
+/* =========================== */
+/* TABLES SECTION */
+/* =========================== */
+div.dataTables_wrapper input[type="search"],
+div.dataTables_wrapper select {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 3px;
+  background: transparent;
+}
+table[datatable] thead tr th {
+  border-bottom: 1px solid #dddddd;
+  color: #4e4e4e;
+  font-weight: 400;
+  font-size: 1rem;
+}
+table[datatable].dataTable {
+  color: rgb(85, 85, 85);
+  font-size: 0.87rem;
+  margin-bottom: 15px;
+}
+div.dataTables_wrapper table[datatable] {
+  border-bottom: 1px solid #dddddd;
+}
+div.dataTables_wrapper > div {
+  margin-bottom: 10px;
+}
+.table-link {
+  cursor: pointer;
+}
+.dataTables_wrapper.no-footer .dataTables_scrollBody {
+  border-bottom: none !important;
+}
+
+.email {
+  font-style: italic;
+  color: rgb(102, 102, 102);
+  padding-left: 5px;
+  font-size: 0.8rem;
+}
+
+.bold {
+  color: rgb(39, 39, 39);
+  font-weight: 500;
 }

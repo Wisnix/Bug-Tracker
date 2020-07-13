@@ -1,0 +1,30 @@
+<div class="container">
+  <button mat-raised-button (click)="onNewProject()">Create New Project</button>
+  <mat-card class="card">
+    <div class="card-header card-header-orange">
+      <h3 class="card-header-title">Projects</h3>
+      <p class="card-header-subtitle">All projects</p>
+    </div>
+    <div class="card-content">
+      <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border stripe hover">
+        <thead>
+          <tr>
+            <th>Project Name</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let project of projects">
+            <td class="dt-body-center table-link">{{ project.title }}</td>
+            <td class="dt-body-center">{{ project.status }}</td>
+            <td class="dt-body-center">
+              <a routerLink="/projects/{{ project._id }}">Details</a><br />
+              <a>Manage Users</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </mat-card>
+</div>

@@ -106,7 +106,11 @@ mat-nav-list a {
   flex: 1 1 auto;
 }
 #new-ticket {
-  background-color: #1e90ff;
-  color: #fff;
+  border: 1px solid #66bb6a;
+  color: #66bb6a;
   text-transform: uppercase;
+}
+#new-ticket:hover {
+  background-color: #66bb6a;
+  color: #fff;
 }

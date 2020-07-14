@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { ProjectService } from "../project.service";
 import { switchMap } from "rxjs/operators";
 import { Project } from "../project.model";
@@ -23,7 +23,7 @@ export class SelectProjectComponent implements OnInit, OnDestroy {
   dtEmployeesOptions: DataTables.Settings = {};
   dtTicketsOptions: DataTables.Settings = {};
   dtTrigger = new Subject();
-  constructor(private route: ActivatedRoute, private projectService: ProjectService) {}
+  constructor(private route: ActivatedRoute, private projectService: ProjectService, private router: Router) {}
 
   ngOnInit() {
     this.dtTeamsOptions = {
@@ -56,6 +56,10 @@ export class SelectProjectComponent implements OnInit, OnDestroy {
       this.teams = project.teams;
       this.dtTrigger.next();
     });
+  }
+
+  onSelectTicket(ticketNumber: number) {
+    this.router.navigate(["/tickets/", ticketNumber]);
   }
 
   ngOnDestroy() {

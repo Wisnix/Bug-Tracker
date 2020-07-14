@@ -6,7 +6,11 @@ import { Team } from "./team.model";
 export class TeamService {
   constructor(private http: HttpClient) {}
 
-  getTeams(projectId: string) {
-    return this.http.get<Team[]>("http://localhost:5000/api/teams", { params: { projectId } });
+  getTeams(projectId?: string) {
+    return this.http.get<Team[]>("http://localhost:5000/api/teams", projectId ? { params: { projectId } } : {});
+  }
+
+  createTeam(teamName: string, projectId: string) {
+    return this.http.post<Team>("http://localhost:5000/api/teams", { teamName, projectId });
   }
 }

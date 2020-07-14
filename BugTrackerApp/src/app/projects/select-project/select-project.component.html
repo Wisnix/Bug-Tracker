@@ -28,7 +28,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let ticket of tickets">
+          <tr *ngFor="let ticket of tickets" (click)="onSelectTicket(ticket.number)">
             <td class="dt-body-center table-link">{{ ticket.number }}</td>
             <td class="dt-body-center">{{ ticket.title }}</td>
             <td class="dt-body-center">{{ ticket.status }}</td>

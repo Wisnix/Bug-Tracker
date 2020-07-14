@@ -22,6 +22,18 @@ router.get("/", checkAuth, (req, res, next) => {
     });
 });
 
+router.post("/", checkAuth, (req, res, next) => {
+  const team = new Team({ name: req.body.teamName, project: req.body.projectId });
+  team
+    .save()
+    .then((team) => {
+      res.status(200).json(team);
+    })
+    .catch((error) => {
+      res.status(500).json(error);
+    });
+});
+
 router.get("/:id/employees", checkAuth, (req, res, next) => {
   const teamId = req.params.id;
   Employee.find({ team: teamId }, "_id firstName lastName email")

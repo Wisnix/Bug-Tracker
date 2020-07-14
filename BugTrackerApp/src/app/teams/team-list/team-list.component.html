@@ -1,0 +1,45 @@
+<div class="container">
+  <button mat-raised-button (click)="newTeam = !newTeam">{{ newTeam ? "Cancel" : "Create New Team" }}</button>
+  <mat-card class="card" *ngIf="newTeam">
+    <div class="card-header card-header-green">
+      <p class="card-header-title-sm">New Team</p>
+    </div>
+    <div class="card-content">
+      <form (submit)="onNewTeam()">
+        <div>
+          <mat-form-field appearance="outline">
+            <mat-label>Team Name</mat-label>
+            <input matInput type="text" placeholder="Team Name" name="teamName" [(ngModel)]="teamName" />
+          </mat-form-field>
+        </div>
+        <button mat-raised-button class="green-button create-project">Create New Team</button>
+      </form>
+    </div>
+  </mat-card>
+  <mat-card class="card">
+    <div class="card-header card-header-orange">
+      <h3 class="card-header-title">Teams</h3>
+      <p class="card-header-subtitle">All teams in your project</p>
+    </div>
+    <div class="card-content">
+      <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover teams">
+        <thead>
+          <tr>
+            <th>Team Name</th>
+            <th>Employees</th>
+            <th>Active Tickets</th>
+            <th>Total Tickets</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let team of teams">
+            <td class="dt-body-center">{{ team.name }}</td>
+            <td class="dt-body-center">{{ team.employees.length }}</td>
+            <td class="dt-body-center">OBLICZ tickety dla teamu</td>
+            <td class="dt-body-center">OBLICZ tickety dla teamu</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </mat-card>
+</div>

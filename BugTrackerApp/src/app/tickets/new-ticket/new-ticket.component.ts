@@ -5,8 +5,8 @@ import { AuthService } from "src/app/auth/auth.service";
 import { Subscription, ReplaySubject } from "rxjs";
 import { TeamService } from "src/app/teams/team.service";
 import { Team } from "src/app/teams/team.model";
-import { Employee } from "src/app/employee/employee.model";
-import { EmployeeService } from "src/app/employee/employee.service";
+import { Employee } from "src/app/employees/employee.model";
+import { EmployeeService } from "src/app/employees/employee.service";
 import { Router } from "@angular/router";
 
 @Component({

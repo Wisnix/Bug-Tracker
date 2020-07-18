@@ -3,7 +3,6 @@ import { Team } from "../team.model";
 import { Subject, Subscription } from "rxjs";
 import { AuthService } from "src/app/auth/auth.service";
 import { TeamService } from "../team.service";
-import { FormControl, Validators } from "@angular/forms";
 
 @Component({
   selector: "app-team-list",

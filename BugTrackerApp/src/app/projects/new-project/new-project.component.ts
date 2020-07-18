@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormControl, Validators, FormArray } from "@angular/forms";
 import { ProjectService } from "../project.service";
-import { EmployeeService } from "src/app/employee/employee.service";
-import { Employee } from "src/app/employee/employee.model";
+import { EmployeeService } from "src/app/employees/employee.service";
+import { Employee } from "src/app/employees/employee.model";
 import { Subscription } from "rxjs";
 import { SlowBuffer } from "buffer";
 

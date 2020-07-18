@@ -1,4 +1,4 @@
-import { Employee } from "../employee/employee.model";
+import { Employee } from "../employees/employee.model";
 import { Team } from "../teams/team.model";
 
 export interface Project {

@@ -27,7 +27,8 @@
           <tr>
             <th>Team Name</th>
             <th>Employees</th>
-            <th>Active Tickets</th>
+            <th>Open Tickets</th>
+            <th>Closed Tickets</th>
             <th>Total Tickets</th>
           </tr>
         </thead>
@@ -35,8 +36,9 @@
           <tr *ngFor="let team of teams">
             <td class="dt-body-center">{{ team.name }}</td>
             <td class="dt-body-center">{{ team.employees.length }}</td>
-            <td class="dt-body-center">OBLICZ tickety dla teamu</td>
-            <td class="dt-body-center">OBLICZ tickety dla teamu</td>
+            <td class="dt-body-center">{{ team.openTickets || 0 }}</td>
+            <td class="dt-body-center">{{ team.closedTickets || 0 }}</td>
+            <td class="dt-body-center">{{ team.openTickets + team.closedTickets || 0 }}</td>
           </tr>
         </tbody>
       </table>

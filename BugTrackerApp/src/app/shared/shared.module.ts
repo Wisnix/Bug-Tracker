@@ -13,6 +13,10 @@ import { MatListModule } from "@angular/material/list";
 import { MatSelectModule } from "@angular/material/select";
 import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
 import { HistoryTitlePipe } from "./pipes/history-title.pipe";
+import { MatTableModule } from "@angular/material/table";
+import { MatCheckboxModule } from "@angular/material/checkbox";
+import { MatPaginatorModule } from "@angular/material/paginator";
+import { MatDialogModule } from "@angular/material/dialog";
 
 @NgModule({
   declarations: [TimeAgoExtendsPipe, HistoryTitlePipe],
@@ -30,6 +34,10 @@ import { HistoryTitlePipe } from "./pipes/history-title.pipe";
     MatListModule,
     MatSelectModule,
     NgxMatSelectSearchModule,
+    MatTableModule,
+    MatCheckboxModule,
+    MatPaginatorModule,
+    MatDialogModule,
   ],
   exports: [
     CommonModule,
@@ -47,6 +55,10 @@ import { HistoryTitlePipe } from "./pipes/history-title.pipe";
     MatListModule,
     MatSelectModule,
     NgxMatSelectSearchModule,
+    MatTableModule,
+    MatCheckboxModule,
+    MatPaginatorModule,
+    MatDialogModule,
   ],
 })
 export class SharedModule {}

@@ -16,6 +16,7 @@ const routes: Routes = [
       { path: "tickets", loadChildren: () => import("./tickets/tickets.module").then((m) => m.TicketsModule) },
       { path: "projects", loadChildren: () => import("./projects/projects.module").then((m) => m.ProjectsModule) },
       { path: "teams", loadChildren: () => import("./teams/teams.module").then((m) => m.TeamsModule) },
+      { path: "employees", loadChildren: () => import("./employees/employees.module").then((m) => m.EmployeesModule) },
       { path: "dashboard", component: DashboardComponent },
     ],
     // to na dole se skomentowalem dla testowania zeby bylo latwej

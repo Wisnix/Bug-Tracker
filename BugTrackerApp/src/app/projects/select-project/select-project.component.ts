@@ -4,7 +4,7 @@ import { ProjectService } from "../project.service";
 import { switchMap } from "rxjs/operators";
 import { Project } from "../project.model";
 import { Subject, Subscription } from "rxjs";
-import { Employee } from "src/app/employee/employee.model";
+import { Employee } from "src/app/employees/employee.model";
 import { Ticket } from "src/app/tickets/ticket.model";
 import { Team } from "src/app/teams/team.model";
 
@@ -31,7 +31,7 @@ export class SelectProjectComponent implements OnInit, OnDestroy {
       info: false,
       paging: true,
       pagingType: "full_numbers",
-      columns: [{ width: "25%" }, { width: "25%" }, { width: "25%" }, { width: "25%" }],
+      columns: [{ width: "50%" }, { width: "50%" }],
     };
     this.dtEmployeesOptions = {
       autoWidth: false,

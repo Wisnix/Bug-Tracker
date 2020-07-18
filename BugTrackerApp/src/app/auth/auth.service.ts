@@ -4,7 +4,7 @@ import { AuthData } from "./auth-data.model";
 import { Router } from "@angular/router";
 import { Timestamp } from "rxjs/internal/operators/timestamp";
 import { Project } from "../projects/project.model";
-import { Employee } from "../employee/employee.model";
+import { Employee } from "../employees/employee.model";
 
 @Injectable({ providedIn: "root" })
 export class AuthService {

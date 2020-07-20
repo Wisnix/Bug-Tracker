@@ -18,13 +18,16 @@
         <div class="ticket-details">
           <div class="ticket-details-section">
             <p><span class="bold">Raised by:</span></p>
-            <p>{{ ticket.raisedBy.firstName }} {{ ticket.raisedBy.lastName }}</p>
+            <p>
+              {{ ticket.raisedBy?.firstName }} {{ ticket.raisedBy?.lastName }} <span class="email">{{ ticket.raisedBy?.email }}</span>
+            </p>
           </div>
           <hr />
           <div class="ticket-details-section">
             <p><span class="bold">Assigned to:</span></p>
+            <p>{{ ticket.team?.name }}</p>
             <p>
-              {{ ticket.assignedTo.firstName }} {{ ticket.assignedTo.lastName }} <span class="email">{{ ticket.assignedTo.email }}</span>
+              {{ ticket.assignedTo?.firstName }} {{ ticket.assignedTo?.lastName }} <span class="email">{{ ticket.assignedTo?.email }}</span>
             </p>
           </div>
           <hr />
@@ -52,10 +55,10 @@
           </form>
           <div class="comment" *ngFor="let comment of ticket.comments">
             <div class="comment-header">
-              <h5>{{ comment.author.firstName }} {{ comment.author.lastName }}</h5>
-              <h6>{{ comment.createdOn | timeAgo }}</h6>
+              <h5>{{ comment?.author.firstName }} {{ comment?.author.lastName }}</h5>
+              <h6>{{ comment?.createdOn | timeAgo }}</h6>
             </div>
-            <p>{{ comment.content }}</p>
+            <p>{{ comment?.content }}</p>
           </div>
         </div>
       </div>

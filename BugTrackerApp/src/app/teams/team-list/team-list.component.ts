@@ -44,4 +44,6 @@ export class TeamListComponent implements OnInit, OnDestroy {
       });
     }
   }
+
+  onDeleteTeam() {}
 }

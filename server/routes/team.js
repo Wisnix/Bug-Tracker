@@ -1,7 +1,9 @@
 const mongoose = require("mongoose");
 const checkAuth = require("../middleware/check-auth");
 const Team = require("../models/team");
+const Ticket = require("../models/ticket");
 const Employee = require("../models/user");
+const async = require("async");
 const express = require("express");
 const router = express.Router();
 
@@ -11,13 +13,35 @@ router.get("/", checkAuth, (req, res, next) => {
   if (projectId) {
     query.project = projectId;
   }
+  let teams;
   Team.find(query)
-    .then((teams) => {
-      if (teams) {
-        res.status(201).json(teams);
+    .then((foundTeams) => {
+      if (foundTeams) {
+        teams = foundTeams.map((t) => t.toObject());
+        return Ticket.aggregate([
+          { $match: { team: { $in: teams.map((team) => new mongoose.Types.ObjectId(team._id)) } } },
+          {
+            $group: {
+              _id: { team: "$team", status: "$status" },
+              count: { $sum: 1 },
+            },
+          },
+        ]);
       }
     })
+    .then((results) => {
+      for (let team of teams) {
+        for (let result of results) {
+          if (team._id.toString() === result._id.team.toString()) {
+            if (result._id.status === "OPEN") team.openTickets = result.count;
+            if (result._id.status === "CLOSED") team.closedTickets = result.count;
+          }
+        }
+      }
+      res.status(200).json(teams);
+    })
     .catch((error) => {
+      console.log(error);
       res.status(500).json({ message: "An error has occurred.", error });
     });
 });

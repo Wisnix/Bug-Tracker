@@ -22,7 +22,7 @@ export class NewProjectComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
-    this.employeesSub = this.employeeService.getEmployees().subscribe((employees) => {
+    this.employeesSub = this.employeeService.findEmployees("", "", "true").subscribe((employees) => {
       this.employees = employees;
       console.log(employees);
       this.filteredEmployees[0] = [...employees];
@@ -84,7 +84,7 @@ export class NewProjectComponent implements OnInit {
     this.filteredEmployees[index] = this.employeeService.filterEmployeesArray(this.employees, value);
 
     if (this.filteredEmployees[index].length === 0) {
-      this.employeeService.findEmployees(value, this.excludedIds).subscribe((employees) => {
+      this.employeeService.findEmployees(value, this.excludedIds, "true").subscribe((employees) => {
         this.filteredEmployees[index].push(...employees);
       });
     }

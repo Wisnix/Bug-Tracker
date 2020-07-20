@@ -6,4 +6,6 @@ const teamSchema = mongoose.Schema({
   project: { type: mongoose.Schema.Types.ObjectId, ref: "Project" },
 });
 
+// teamSchema.index({ name: 1, project: 1 }, { unique: true });
+
 module.exports = mongoose.model("Team", teamSchema);

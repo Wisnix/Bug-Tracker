@@ -4,9 +4,17 @@
     <div class="card-content">
       <form [formGroup]="ticketForm" (ngSubmit)="onEditTicket()">
         <div>
-          <mat-form-field class="header" appearance="outline">
+          <mat-form-field class="assignment" appearance="outline">
             <mat-label>Title</mat-label>
             <input matInput type="text" placeholder="Title" name="title" formControlName="title" />
+          </mat-form-field>
+          <mat-form-field class="assignment" appearance="outline">
+            <mat-label>Change Status</mat-label>
+            <mat-select formControlName="status">
+              <mat-option value="OPEN">OPEN</mat-option>
+              <mat-option value="CLOSED">CLOSED</mat-option>
+              <mat-option VALUE="TESTING">TESTING</mat-option>
+            </mat-select>
           </mat-form-field>
         </div>
         <div>

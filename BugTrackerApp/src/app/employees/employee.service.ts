@@ -10,8 +10,8 @@ export class EmployeeService {
   getEmployees() {
     return this.http.get<Employee[]>("http://localhost:5000/api/users");
   }
-  findEmployees(searchQuery, excludedIds?) {
-    return this.http.get<Employee[]>("http://localhost:5000/api/users", { params: { searchQuery, excludedIds } });
+  findEmployees(searchQuery, excludedIds?, unassigned?) {
+    return this.http.get<Employee[]>("http://localhost:5000/api/users", { params: { searchQuery, excludedIds, unassigned } });
   }
   findEmployeesByTeam(teamId: string) {
     return this.http.get<Employee[]>(`http://localhost:5000/api/teams/${teamId}/employees`);

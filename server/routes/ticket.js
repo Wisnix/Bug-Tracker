@@ -47,7 +47,7 @@ router.get("/:id", checkAuth, (req, res, next) => {
   const id = req.params.id;
   let ticket = {};
   Ticket.findOne({ number: id })
-    .populate("raisedBy")
+    .populate("raisedBy", "_id firstName lastName email")
     .populate({ path: "comments", populate: { path: "author", select: "firstName lastName email _id createdOn" } })
     .populate("team", "_id name")
     .populate("assignedTo", "_id firstName lastName email")

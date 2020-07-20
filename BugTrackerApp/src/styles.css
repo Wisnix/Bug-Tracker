@@ -129,6 +129,10 @@ div.dataTables_wrapper > div {
 .dataTables_wrapper.no-footer .dataTables_scrollBody {
   border-bottom: none !important;
 }
+.router-link:active,
+.router-link:visited {
+  color: grey;
+}
 
 .email {
   font-style: italic;

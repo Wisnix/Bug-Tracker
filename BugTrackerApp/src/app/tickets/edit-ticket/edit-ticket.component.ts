@@ -50,7 +50,9 @@ export class EditTicketComponent implements OnInit {
           this.ticketForm.get("title").setValue(this.ticket.title);
           this.ticketForm.get("description").setValue(this.ticket.description);
           this.ticketForm.get("team").setValue(this.ticket.team._id);
-          this.ticketForm.get("assignedTo").setValue(this.ticket.assignedTo._id);
+          this.ticketForm.get("assignedTo").setValue(this.ticket.assignedTo?._id);
+          console.log(ticket.status);
+          this.ticketForm.get("status").setValue(this.ticket.status);
           return this.employeeService.findEmployeesByTeam(ticket.team._id);
         })
       )
@@ -77,6 +79,7 @@ export class EditTicketComponent implements OnInit {
   private initForm() {
     this.ticketForm = new FormGroup({
       title: new FormControl("", [Validators.required]),
+      status: new FormControl("", [Validators.required]),
       description: new FormControl("", [Validators.required]),
       team: new FormControl("", [Validators.required]),
       assignedTo: new FormControl("", [Validators.required]),
@@ -129,11 +132,11 @@ export class EditTicketComponent implements OnInit {
     if (ticketFormValue.title !== this.ticket.title) {
       changes.push({ attribute: "title", oldValue: this.ticket.title, newValue: ticketFormValue.title });
     }
-    if (ticketFormValue.assignedTo !== this.ticket.assignedTo._id) {
+    if (ticketFormValue.assignedTo !== this.ticket.assignedTo?._id) {
       const employee = this.employees.find((e) => e._id === ticketFormValue.assignedTo);
       changes.push({
         attribute: "assignedTo",
-        oldValue: `${this.ticket.assignedTo.firstName} ${this.ticket.assignedTo.lastName}`,
+        oldValue: `${this.ticket.assignedTo?.firstName || ""} ${this.ticket.assignedTo?.lastName || ""}`,
         newValue: `${employee.firstName} ${employee.lastName}`,
         id: ticketFormValue.assignedTo,
       });
@@ -144,6 +147,9 @@ export class EditTicketComponent implements OnInit {
     }
     if (ticketFormValue.description !== this.ticket.description) {
       changes.push({ attribute: "description", oldValue: this.ticket.description, newValue: ticketFormValue.description });
+    }
+    if (ticketFormValue.status !== this.ticket.status) {
+      changes.push({ attribute: "status", oldValue: this.ticket.status, newValue: ticketFormValue.status });
     }
     if (changes) {
       this.ticketService.updateTicket(this.ticket.number, changes).subscribe((response) => {

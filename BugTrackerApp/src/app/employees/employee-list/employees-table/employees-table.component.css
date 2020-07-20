@@ -1,0 +1,9 @@
+table {
+  width: 100%;
+}
+mat-form-field {
+  padding-right: 10px;
+}
+.red-option {
+  color: red;
+}

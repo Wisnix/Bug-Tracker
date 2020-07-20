@@ -18,10 +18,7 @@
           <tr *ngFor="let project of projects">
             <td class="dt-body-center table-link">{{ project.title }}</td>
             <td class="dt-body-center">{{ project.status }}</td>
-            <td class="dt-body-center">
-              <a routerLink="/projects/{{ project._id }}">Details</a><br />
-              <a>Manage Users</a>
-            </td>
+            <td class="dt-body-center"><a class="router-link" routerLink="/projects/{{ project._id }}">Project Details</a><br /></td>
           </tr>
         </tbody>
       </table>

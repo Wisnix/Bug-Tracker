@@ -30,6 +30,7 @@
             <th>Open Tickets</th>
             <th>Closed Tickets</th>
             <th>Total Tickets</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -39,6 +40,7 @@
             <td class="dt-body-center">{{ team.openTickets || 0 }}</td>
             <td class="dt-body-center">{{ team.closedTickets || 0 }}</td>
             <td class="dt-body-center">{{ team.openTickets + team.closedTickets || 0 }}</td>
+            <td class="dt-body-center"><button mat-raised-button color="warn" (click)="onDeleteTeam()">Delete Team</button></td>
           </tr>
         </tbody>
       </table>

@@ -26,6 +26,16 @@ router.get("/:id", checkAuth, (req, res, next) => {
     });
 });
 
+router.get("/:id/employees", checkAuth, (req, res, next) => {
+  const id = req.params.id;
+  Team.find({ project: id })
+    .populate("employees", "-password")
+    .then((teams) => {
+      let employees = teams.flatMap((team) => team.employees.map((employee) => ({ ...employee.toObject(), teamName: team.name })));
+      res.status(200).json({ employees, teams });
+    });
+});
+
 router.get("/", checkAuth, (req, res, next) => {
   Project.find().then((projects) => {
     if (projects) {

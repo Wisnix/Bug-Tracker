@@ -5,162 +5,28 @@
       <p class="card-header-subtitle">All employees in your project</p>
     </div>
     <div class="card-content">
-      <mat-form-field>
-        <mat-label>Filter</mat-label>
-        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input />
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Change Team</mat-label>
-        <mat-select (selectionChange)="changeTeam($event)" #teamSelect>
-          <mat-option *ngFor="let team of teams" [value]="team">{{ team.name }}</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Change Role</mat-label>
-        <mat-select (selectionChange)="changeRole($event)">
-          <mat-option *ngFor="let role of roles" [value]="role">{{ role }}</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <table mat-table [dataSource]="assignedEmployeesDataSource" class="mat-elevation-z8">
-        <!-- Checkbox Column -->
-        <ng-container matColumnDef="select">
-          <th mat-header-cell *matHeaderCellDef>
-            <mat-checkbox
-              (change)="$event ? masterToggle() : null"
-              [checked]="assignedEmployeesSelection.hasValue() && isAllSelected()"
-              [indeterminate]="assignedEmployeesSelection.hasValue() && !isAllSelected()"
-              [aria-label]="checkboxLabel()"
-            >
-            </mat-checkbox>
-          </th>
-          <td mat-cell *matCellDef="let row">
-            <mat-checkbox
-              (click)="$event.stopPropagation()"
-              (change)="$event ? assignedEmployeesSelection.toggle(row) : null"
-              [checked]="assignedEmployeesSelection.isSelected(row)"
-              [aria-label]="checkboxLabel(row)"
-            >
-            </mat-checkbox>
-          </td>
-        </ng-container>
-
-        <!-- Email Column -->
-        <ng-container matColumnDef="email">
-          <th mat-header-cell *matHeaderCellDef>Email</th>
-          <td mat-cell *matCellDef="let element">{{ element.email }}</td>
-        </ng-container>
-
-        <!-- First Name Column -->
-        <ng-container matColumnDef="firstName">
-          <th mat-header-cell *matHeaderCellDef>First Name</th>
-          <td mat-cell *matCellDef="let element">{{ element.firstName }}</td>
-        </ng-container>
-
-        <!-- Last Name Column -->
-        <ng-container matColumnDef="lastName">
-          <th mat-header-cell *matHeaderCellDef>Last Name</th>
-          <td mat-cell *matCellDef="let element">{{ element.lastName }}</td>
-        </ng-container>
-
-        <!-- Team Column -->
-        <ng-container matColumnDef="teamName">
-          <th mat-header-cell *matHeaderCellDef>Team</th>
-          <td mat-cell *matCellDef="let element">{{ element.teamName }}</td>
-        </ng-container>
-
-        <!-- Role Column -->
-        <ng-container matColumnDef="role">
-          <th mat-header-cell *matHeaderCellDef>Role</th>
-          <td mat-cell *matCellDef="let element">{{ element.role }}</td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="assignedEmployeesSelection.toggle(row)"></tr>
-      </table>
-      <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+      <app-employees-table
+        [teams]="teams"
+        [showUnassignOption]="true"
+        [employees]="employees"
+        (unassignEmployees)="onUnassignEmployees($event)"
+      ></app-employees-table>
     </div>
   </mat-card>
 </div>
-<!-- ***************** UNASSIGNED EMPLOYEES ******************* -->
-<div class="container">
+
+<div class="container" *ngIf="unassignedEmployees.length">
   <mat-card>
     <div class="card-header card-header-orange">
       <p class="card-header-title">Unassigned employees</p>
     </div>
     <div class="card-content">
-      <mat-form-field>
-        <mat-label>Filter</mat-label>
-        <input matInput (keyup)="applyFilterUnassigned($event)" placeholder="Ex. ium" #input />
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Change Team</mat-label>
-        <mat-select (selectionChange)="changeTeam($event)" #teamSelect>
-          <mat-option *ngFor="let team of teams" [value]="team">{{ team.name }}</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Change Role</mat-label>
-        <mat-select (selectionChange)="changeRole($event)">
-          <mat-option *ngFor="let role of roles" [value]="role">{{ role }}</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <table mat-table [dataSource]="unassignedEmployeesDataSource" class="mat-elevation-z8">
-        <!-- Checkbox Column -->
-        <ng-container matColumnDef="select">
-          <th mat-header-cell *matHeaderCellDef>
-            <mat-checkbox
-              (change)="$event ? masterToggleUnassigned() : null"
-              [checked]="unassignedEmployeesSelection.hasValue() && isAllSelectedUnassigned()"
-              [indeterminate]="unassignedEmployeesSelection.hasValue() && !isAllSelectedUnassigned()"
-              [aria-label]="checkboxLabelUnassigned()"
-            >
-            </mat-checkbox>
-          </th>
-          <td mat-cell *matCellDef="let row">
-            <mat-checkbox
-              (click)="$event.stopPropagation()"
-              (change)="$event ? unassignedEmployeesSelection.toggle(row) : null"
-              [checked]="unassignedEmployeesSelection.isSelected(row)"
-              [aria-label]="checkboxLabelUnassigned(row)"
-            >
-            </mat-checkbox>
-          </td>
-        </ng-container>
-
-        <!-- Email Column -->
-        <ng-container matColumnDef="email">
-          <th mat-header-cell *matHeaderCellDef>Email</th>
-          <td mat-cell *matCellDef="let element">{{ element.email }}</td>
-        </ng-container>
-
-        <!-- First Name Column -->
-        <ng-container matColumnDef="firstName">
-          <th mat-header-cell *matHeaderCellDef>First Name</th>
-          <td mat-cell *matCellDef="let element">{{ element.firstName }}</td>
-        </ng-container>
-
-        <!-- Last Name Column -->
-        <ng-container matColumnDef="lastName">
-          <th mat-header-cell *matHeaderCellDef>Last Name</th>
-          <td mat-cell *matCellDef="let element">{{ element.lastName }}</td>
-        </ng-container>
-
-        <!-- Team Column -->
-        <ng-container matColumnDef="teamName">
-          <th mat-header-cell *matHeaderCellDef>Team</th>
-          <td mat-cell *matCellDef="let element">{{ element.teamName }}</td>
-        </ng-container>
-
-        <!-- Role Column -->
-        <ng-container matColumnDef="role">
-          <th mat-header-cell *matHeaderCellDef>Role</th>
-          <td mat-cell *matCellDef="let element">{{ element.role }}</td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="unassignedEmployeesSelection.toggle(row)"></tr>
-      </table>
-      <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+      <app-employees-table
+        [teams]="teams"
+        [employees]="unassignedEmployees"
+        [showUnassignOption]="false"
+        (assignEmployees)="onAssignEmployees($event)"
+      ></app-employees-table>
     </div>
   </mat-card>
 </div>

@@ -34,7 +34,9 @@ const upload = multer({ storage: storage });
 
 //ROUTES
 router.get("/", checkAuth, (req, res, next) => {
-  Ticket.find().then((tickets) => {
+  const projectId = req.query.projectId;
+  let query = projectId ? { project: projectId } : {};
+  Ticket.find(query).then((tickets) => {
     if (tickets) {
       res.status(200).json(tickets);
     } else {

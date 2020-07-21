@@ -13,4 +13,8 @@ export class TeamService {
   createTeam(teamName: string, projectId: string) {
     return this.http.post<Team>("http://localhost:5000/api/teams", { teamName, projectId });
   }
+
+  deleteTeam(id: string) {
+    return this.http.delete(`http://localhost:5000/api/teams/${id}`);
+  }
 }

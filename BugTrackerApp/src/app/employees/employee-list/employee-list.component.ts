@@ -21,19 +21,21 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
   constructor(private employeeService: EmployeeService, private authService: AuthService) {}
 
   ngOnInit() {
-    this.projectId = this.authService.loggedEmployee.team.project._id;
-    this.employeesSub = this.employeeService.findEmployeesByProject(this.projectId).subscribe(({ employees, teams }) => {
-      this.employees = employees;
-      this.teams = teams;
-    });
-    this.unassignedEmployeesSub = this.employeeService.findEmployees("", "", "true").subscribe((unassignedEmployees) => {
-      this.unassignedEmployees = unassignedEmployees;
-      console.log(unassignedEmployees);
-    });
+    this.projectId = this.authService.loggedEmployee.team?.project._id;
+    if (this.projectId) {
+      this.employeesSub = this.employeeService.findEmployeesByProject(this.projectId).subscribe(({ employees, teams }) => {
+        this.employees = employees;
+        this.teams = teams;
+      });
+      this.unassignedEmployeesSub = this.employeeService.findEmployees("", "", "true").subscribe((unassignedEmployees) => {
+        this.unassignedEmployees = unassignedEmployees;
+        console.log(unassignedEmployees);
+      });
+    }
   }
   ngOnDestroy() {
-    this.employeesSub.unsubscribe();
-    this.unassignedEmployeesSub.unsubscribe();
+    this.employeesSub?.unsubscribe();
+    this.unassignedEmployeesSub?.unsubscribe();
   }
   onAssignEmployees(assignedEmployees) {
     this.employees = [...this.employees, ...assignedEmployees];

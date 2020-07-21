@@ -17,9 +17,11 @@ import { MatTableModule } from "@angular/material/table";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatDialogModule } from "@angular/material/dialog";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 
 @NgModule({
-  declarations: [TimeAgoExtendsPipe, HistoryTitlePipe],
+  declarations: [TimeAgoExtendsPipe, HistoryTitlePipe, ConfirmDialogComponent],
   imports: [
     CommonModule,
     RouterModule,
@@ -38,6 +40,7 @@ import { MatDialogModule } from "@angular/material/dialog";
     MatCheckboxModule,
     MatPaginatorModule,
     MatDialogModule,
+    MatSnackBarModule,
   ],
   exports: [
     CommonModule,
@@ -59,6 +62,7 @@ import { MatDialogModule } from "@angular/material/dialog";
     MatCheckboxModule,
     MatPaginatorModule,
     MatDialogModule,
+    MatSnackBarModule,
   ],
 })
 export class SharedModule {}

@@ -8,6 +8,7 @@ import { Team } from "src/app/teams/team.model";
 import { Employee } from "src/app/employees/employee.model";
 import { EmployeeService } from "src/app/employees/employee.service";
 import { Router } from "@angular/router";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 @Component({
   selector: "app-new-ticket",
@@ -31,7 +32,8 @@ export class NewTicketComponent implements OnInit {
     private authService: AuthService,
     private teamService: TeamService,
     private employeeService: EmployeeService,
-    private router: Router
+    private router: Router,
+    private _snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -68,6 +70,11 @@ export class NewTicketComponent implements OnInit {
       this.ticketService.createTicket(this.ticketForm.value).subscribe((res) => {
         if (res.ticket) {
           this.router.navigate(["tickets/", res.ticket.number]);
+          this._snackBar.open("Ticket created sucessfully", "", {
+            duration: 2000,
+            verticalPosition: "top",
+            panelClass: "snackbar-success",
+          });
         }
       });
   }

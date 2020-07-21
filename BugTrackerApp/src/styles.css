@@ -134,14 +134,28 @@ div.dataTables_wrapper > div {
   color: grey;
 }
 
+/* =========================== */
+/* TEST STYLES */
+/* =========================== */
 .email {
   font-style: italic;
   color: rgb(102, 102, 102);
   padding-left: 5px;
   font-size: 0.8rem;
 }
-
 .bold {
   color: rgb(39, 39, 39);
   font-weight: 500;
+}
+
+/* =========================== */
+/* SNACKBAR SECTION */
+/* =========================== */
+.snackbar-warning {
+  background-color: #d9534f;
+  color: white;
+}
+.snackbar-success {
+  background-color: #5cb85c;
+  color: #fff;
 }

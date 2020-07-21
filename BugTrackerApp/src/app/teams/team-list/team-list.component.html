@@ -1,5 +1,5 @@
 <div class="container">
-  <button mat-raised-button (click)="newTeam = !newTeam">{{ newTeam ? "Cancel" : "Create New Team" }}</button>
+  <button mat-raised-button *ngIf="projectId" (click)="newTeam = !newTeam">{{ newTeam ? "Cancel" : "Create New Team" }}</button>
   <mat-card class="card" *ngIf="newTeam">
     <div class="card-header card-header-green">
       <p class="card-header-title-sm">New Team</p>
@@ -22,28 +22,33 @@
       <p class="card-header-subtitle">All teams in your project</p>
     </div>
     <div class="card-content">
-      <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover teams">
-        <thead>
-          <tr>
-            <th>Team Name</th>
-            <th>Employees</th>
-            <th>Open Tickets</th>
-            <th>Closed Tickets</th>
-            <th>Total Tickets</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let team of teams">
-            <td class="dt-body-center">{{ team.name }}</td>
-            <td class="dt-body-center">{{ team.employees.length }}</td>
-            <td class="dt-body-center">{{ team.openTickets || 0 }}</td>
-            <td class="dt-body-center">{{ team.closedTickets || 0 }}</td>
-            <td class="dt-body-center">{{ team.openTickets + team.closedTickets || 0 }}</td>
-            <td class="dt-body-center"><button mat-raised-button color="warn" (click)="onDeleteTeam()">Delete Team</button></td>
-          </tr>
-        </tbody>
-      </table>
+      <p *ngIf="!projectId; else elseBlock">You are not assigned to any project.</p>
+      <ng-template #elseBlock>
+        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover teams">
+          <thead>
+            <tr>
+              <th>Team Name</th>
+              <th>Employees</th>
+              <th>Open Tickets</th>
+              <th>Closed Tickets</th>
+              <th>Total Tickets</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let team of teams">
+              <td class="dt-body-center">
+                <span class="bold">{{ team.name }}</span>
+              </td>
+              <td class="dt-body-center">{{ team.employees.length }}</td>
+              <td class="dt-body-center">{{ team.openTickets || 0 }}</td>
+              <td class="dt-body-center">{{ team.closedTickets || 0 }}</td>
+              <td class="dt-body-center">{{ team.openTickets + team.closedTickets || 0 }}</td>
+              <td class="dt-body-center"><button mat-raised-button color="warn" (click)="onDeleteTeam(team)">Delete Team</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </ng-template>
     </div>
   </mat-card>
 </div>

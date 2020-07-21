@@ -2,17 +2,15 @@ const mongoose = require("mongoose");
 const checkAuth = require("../middleware/check-auth");
 const Team = require("../models/team");
 const Ticket = require("../models/ticket");
+const Project = require("../models/project");
 const Employee = require("../models/user");
 const async = require("async");
 const express = require("express");
 const router = express.Router();
 
 router.get("/", checkAuth, (req, res, next) => {
-  let query = {};
   const projectId = req.query.projectId;
-  if (projectId) {
-    query.project = projectId;
-  }
+  let query = projectId ? { project: projectId } : {};
   let teams;
   Team.find(query)
     .then((foundTeams) => {
@@ -51,10 +49,33 @@ router.post("/", checkAuth, (req, res, next) => {
   team
     .save()
     .then((team) => {
+      return Project.findByIdAndUpdate(team.project, { $push: { teams: team } });
+    })
+    .then((projectUpdated) => {
       res.status(200).json(team);
     })
     .catch((error) => {
       res.status(500).json(error);
+    });
+});
+
+router.delete("/:id", (req, res, next) => {
+  const id = req.params.id;
+  let team;
+  Team.findByIdAndDelete(id)
+    .then((deletedTeam) => {
+      if (deletedTeam) {
+        team = deletedTeam;
+        return Employee.updateMany({ _id: { $in: deletedTeam.employees } }, { $unset: { team: "" } });
+      } else {
+        res.status(404).json({ message: "Team not found" });
+      }
+    })
+    .then((update) => {
+      return Project.findByIdAndUpdate(team.project, { $pull: { teams: team._id } });
+    })
+    .then((project) => {
+      res.status(200).json({ message: "Team removed successfully." });
     });
 });
 

@@ -11,6 +11,7 @@ import { Ticket } from "../ticket.model";
 import { ActivatedRoute } from "@angular/router";
 import { switchMap, flatMap } from "rxjs/operators";
 import { Location } from "@angular/common";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 @Component({
   selector: "app-edit-ticket",
@@ -37,7 +38,8 @@ export class EditTicketComponent implements OnInit {
     private teamService: TeamService,
     private employeeService: EmployeeService,
     private route: ActivatedRoute,
-    private location: Location
+    private location: Location,
+    private _snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -151,9 +153,14 @@ export class EditTicketComponent implements OnInit {
     if (ticketFormValue.status !== this.ticket.status) {
       changes.push({ attribute: "status", oldValue: this.ticket.status, newValue: ticketFormValue.status });
     }
-    if (changes) {
+    if (changes.length) {
       this.ticketService.updateTicket(this.ticket.number, changes).subscribe((response) => {
         this.location.back();
+        this._snackBar.open(`Ticket ${this.ticket.number} updated `, "", {
+          duration: 2000,
+          verticalPosition: "top",
+          panelClass: "snackbar-success",
+        });
       });
     }
   }

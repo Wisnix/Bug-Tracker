@@ -5,4 +5,6 @@ export interface Team {
   name: string;
   employees: [];
   project: Project;
+  openTickets?: number;
+  closedTickets?: number;
 }

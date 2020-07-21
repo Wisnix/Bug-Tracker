@@ -8,8 +8,8 @@ import { Router } from "@angular/router";
 export class TicketService {
   constructor(private http: HttpClient) {}
 
-  getTickets() {
-    return this.http.get<Ticket[]>("http://localhost:5000/api/tickets");
+  getTickets(projectId?: string) {
+    return this.http.get<Ticket[]>("http://localhost:5000/api/tickets", projectId ? { params: { projectId } } : {});
   }
   getTicket(number: number) {
     return this.http.get<Ticket>(`http://localhost:5000/api/tickets/${number}`);

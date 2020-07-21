@@ -5,11 +5,12 @@ import { SelectionModel } from "@angular/cdk/collections";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { Team } from "src/app/teams/team.model";
-import { DialogUpdateEmployeeComponent } from "../dialog-update-employee/dialog-update-employee.component";
 import { EmployeeService } from "../../employee.service";
 import { MatDialog } from "@angular/material/dialog";
 import { switchMap } from "rxjs/operators";
 import { of, BehaviorSubject, Subscription } from "rxjs";
+import { ConfirmDialogComponent } from "src/app/shared/confirm-dialog/confirm-dialog.component";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 @Component({
   selector: "app-employees-table",
@@ -35,7 +36,7 @@ export class EmployeesTableComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  constructor(private employeeService: EmployeeService, public dialog: MatDialog) {}
+  constructor(private employeeService: EmployeeService, public dialog: MatDialog, private _snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     this.dataSource.paginator = this.paginator;
@@ -79,18 +80,11 @@ export class EmployeesTableComponent implements OnInit, OnDestroy {
   updateEmployees(event, updateType) {
     const employees = this.selection.selected;
     const newValue = event.value;
-    const data = { qty: employees.length };
-    const updateQuery = {};
-    if (updateType === "role") {
-      data["role"] = newValue;
-      updateQuery["role"] = newValue;
-    } else if (updateType === "team" && !newValue._id) {
-      updateQuery["$unset"] = { team: "" };
-    } else if (updateType === "team") {
-      data["team"] = newValue.name;
-      updateQuery["team"] = newValue._id;
-    }
-    const dialogRef = this.dialog.open(DialogUpdateEmployeeComponent, {
+    let data = { message: "" };
+    let updateQuery = {};
+    this.updateQuery(updateQuery, data, updateType, newValue);
+
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: "300px",
       data,
     });
@@ -105,39 +99,61 @@ export class EmployeesTableComponent implements OnInit, OnDestroy {
         event.source.value = "";
         console.log(response);
         if (response) {
-          let refresh = false;
           let assignedEmployees = [];
           let unassignedEmployees = [];
-          for (let i = this.selectedRows.length - 1; i >= 0; i--) {
-            let row = this.dataSource.data[this.selectedRows[i]];
-            if (updateType === "role") {
-              row.role = newValue;
-            } else if (updateType === "team" && !row.team) {
-              //move unassigned employee to assigned list
-              refresh = true;
-              row.teamName = newValue.name;
-              row.team = newValue._id;
-              assignedEmployees.push(row);
-              this.dataSource.data.splice(i, 1);
-            } else if (updateType === "team" && !newValue._id) {
-              refresh = true;
-              row.teamName = "";
-              row.team = null;
-              unassignedEmployees.push(row);
-              this.dataSource.data.splice(i, 1);
-            } else if (updateType === "team") {
-              //change team of already assigned employee
-              row.teamName = newValue.name;
-              row.team = newValue._id;
-            }
-          }
-          if (refresh) this._employees.next(this.dataSource.data);
+          this.updateTable(assignedEmployees, unassignedEmployees, updateType, newValue);
           if (assignedEmployees.length) this.assignEmployees.emit(assignedEmployees);
           if (unassignedEmployees.length) this.unassignEmployees.emit(unassignedEmployees);
-          this.selectedRows = [];
-          this.selection.clear();
+          this._snackBar.open("Employees updated ", "", {
+            duration: 2000,
+            verticalPosition: "top",
+            panelClass: "snackbar-success",
+          });
         }
       });
+  }
+  private updateQuery(updateQuery: any, data: any, updateType: string, newValue: any) {
+    const qty = this.selection.selected.length;
+    if (updateType === "role") {
+      data.message = `Are you sure you want to change the role of ${qty} employees to ${newValue}?`;
+      updateQuery["role"] = newValue;
+    } else if (updateType === "team" && !newValue._id) {
+      data.message = `Are you sure you want to unassign ${qty} ${qty > 1 ? "employees" : "employee"}?`;
+      updateQuery["$unset"] = { team: "" };
+    } else if (updateType === "team") {
+      data.message = `Are you sute you want to move ${qty} employees to Team ${newValue.name}?`;
+      updateQuery["team"] = newValue._id;
+    }
+  }
+  private updateTable(assignedEmployees: Employee[], unassignedEmployees: Employee[], updateType: string, newValue: any) {
+    let refresh: boolean = false;
+    for (let i = this.selectedRows.length - 1; i >= 0; i--) {
+      let row = this.dataSource.data[this.selectedRows[i]];
+      if (updateType === "role") {
+        row.role = newValue;
+      } else if (updateType === "team" && !row.team) {
+        //move unassigned employee to assigned list
+        row.teamName = newValue.name;
+        row.team = newValue._id;
+        assignedEmployees.push(row);
+        this.dataSource.data.splice(i, 1);
+        refresh = true;
+      } else if (updateType === "team" && !newValue._id) {
+        //unassign employee
+        row.teamName = "";
+        row.team = null;
+        unassignedEmployees.push(row);
+        this.dataSource.data.splice(i, 1);
+        refresh = true;
+      } else if (updateType === "team") {
+        //change team of assigned employee
+        row.teamName = newValue.name;
+        row.team = newValue._id;
+      }
+    }
+    if (refresh) this.employees = this.dataSource.data;
+    this.selectedRows = [];
+    this.selection.clear();
   }
   toggleSelection(row, i) {
     let index = i + this.paginator.pageSize * this.paginator.pageIndex;
@@ -150,7 +166,6 @@ export class EmployeesTableComponent implements OnInit, OnDestroy {
   }
   dupa() {
     // console.log(this.paginator.pageIndex);
-    console.log(this.selectedRows);
     // console.log(this.selectedRows.length);
   }
 }

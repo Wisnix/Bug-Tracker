@@ -9,10 +9,13 @@ export class TicketService {
   constructor(private http: HttpClient) {}
 
   getTickets(projectId?: string) {
-    return this.http.get<Ticket[]>("http://localhost:5000/api/tickets", projectId ? { params: { projectId } } : {});
+    return this.http.get<Ticket[]>("http://localhost:5000/api/tickets", projectId ? { params: { project: projectId } } : {});
   }
   getTicket(number: number) {
     return this.http.get<Ticket>(`http://localhost:5000/api/tickets/${number}`);
+  }
+  findTicketByNumber(projectId: string, number: number) {
+    return this.http.get<Ticket>("http://localhost:5000/api/tickets", { params: { project: projectId, number: String(number) } });
   }
 
   addComment(number: number, comment: String) {
@@ -30,6 +33,8 @@ export class TicketService {
     ticketData.append("description", ticket.description);
     ticketData.append("assignedTo", ticket.assignedTo);
     ticketData.append("team", ticket.team);
+    ticketData.append("priority", ticket.priority);
+    ticketData.append("type", ticket.type);
     for (let file of ticket.files) {
       ticketData.append("files", file.file);
     }

@@ -11,6 +11,24 @@
         </div>
         <div>
           <mat-form-field class="assignment" appearance="outline">
+            <mat-label>Select Priority</mat-label>
+            <mat-select formControlName="priority">
+              <mat-option value="LOW">Low</mat-option>
+              <mat-option value="MEDIUM">Medium</mat-option>
+              <mat-option value="HIGH">High</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="assignment" appearance="outline">
+            <mat-label>Select Ticket Type</mat-label>
+            <mat-select formControlName="type">
+              <mat-option value="BUG">Bug</mat-option>
+              <mat-option value="FEATURE REQUEST">Feature Request</mat-option>
+              <mat-option value="DESIGN ISSUE">Design Issue</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field class="assignment" appearance="outline">
             <mat-label>Select Team</mat-label>
             <mat-select (selectionChange)="onLoadEmployees($event)" formControlName="team">
               <mat-option

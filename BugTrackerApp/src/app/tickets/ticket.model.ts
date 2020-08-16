@@ -13,6 +13,8 @@ export interface Ticket {
   raisedBy: Employee;
   comments: Comment[];
   team: Team;
+  priority: string;
+  type: string;
   assignedTo: Employee;
   history: any[];
 }

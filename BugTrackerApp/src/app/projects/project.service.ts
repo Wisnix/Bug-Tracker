@@ -16,6 +16,10 @@ export class ProjectService {
     return this.http.get<Project[]>("http://localhost:5000/api/projects");
   }
 
+  getProjectStatistics(id: string) {
+    return this.http.get<any>(`http://localhost:5000/api/projects/${id}/statistics`);
+  }
+
   createProject(project: Project) {
     this.http
       .post<{ message: String; project: Project }>("http://localhost:5000/api/projects", { project })

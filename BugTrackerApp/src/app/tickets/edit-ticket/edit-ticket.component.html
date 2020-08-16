@@ -48,6 +48,16 @@
           </mat-form-field>
         </div>
         <div>
+          <mat-form-field class="assignment" appearance="outline">
+            <mat-label>Select Priority</mat-label>
+            <mat-select formControlName="priority">
+              <mat-option value="LOW">Low</mat-option>
+              <mat-option value="MEDIUM">Medium</mat-option>
+              <mat-option value="HIGH">High</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div>
           <mat-form-field class="textarea" appearance="outline">
             <mat-label>Description</mat-label>
             <textarea matInput name="description" id="description" cols="30" rows="10" formControlName="description"></textarea>

@@ -53,8 +53,8 @@ export class EditTicketComponent implements OnInit {
           this.ticketForm.get("description").setValue(this.ticket.description);
           this.ticketForm.get("team").setValue(this.ticket.team._id);
           this.ticketForm.get("assignedTo").setValue(this.ticket.assignedTo?._id);
-          console.log(ticket.status);
           this.ticketForm.get("status").setValue(this.ticket.status);
+          this.ticketForm.get("priority").setValue(this.ticket.priority);
           return this.employeeService.findEmployeesByTeam(ticket.team._id);
         })
       )
@@ -84,6 +84,7 @@ export class EditTicketComponent implements OnInit {
       status: new FormControl("", [Validators.required]),
       description: new FormControl("", [Validators.required]),
       team: new FormControl("", [Validators.required]),
+      priority: new FormControl("", [Validators.required]),
       assignedTo: new FormControl("", [Validators.required]),
     });
   }
@@ -152,6 +153,9 @@ export class EditTicketComponent implements OnInit {
     }
     if (ticketFormValue.status !== this.ticket.status) {
       changes.push({ attribute: "status", oldValue: this.ticket.status, newValue: ticketFormValue.status });
+    }
+    if (ticketFormValue.priority !== this.ticket.priority) {
+      changes.push({ attribute: "priority", oldValue: this.ticket.priority, newValue: ticketFormValue.priority });
     }
     if (changes.length) {
       this.ticketService.updateTicket(this.ticket.number, changes).subscribe((response) => {

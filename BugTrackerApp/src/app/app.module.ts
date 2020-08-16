@@ -19,7 +19,6 @@ import { FormsModule } from "@angular/forms";
 import { MainComponent } from "./main/main.component";
 import { SignupComponent } from "./auth/signup/signup.component";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
-import { TicketsComponent } from "./tickets/tickets.component";
 import { AuthInterceptor } from "./auth/auth-interceptor";
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { TicketsModule } from "./tickets/tickets.module";
@@ -27,6 +26,7 @@ import { MatGridListModule } from "@angular/material/grid-list";
 import { MatCardModule } from "@angular/material/card";
 import { MatMenuModule } from "@angular/material/menu";
 import { ProjectsModule } from "./projects/projects.module";
+import { ChartModule } from "angular2-chartjs";
 
 @NgModule({
   declarations: [AppComponent, NavigationComponent, LoginComponent, MainComponent, SignupComponent, DashboardComponent],
@@ -50,6 +50,7 @@ import { ProjectsModule } from "./projects/projects.module";
     MatGridListModule,
     MatCardModule,
     MatMenuModule,
+    ChartModule,
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   bootstrap: [AppComponent],

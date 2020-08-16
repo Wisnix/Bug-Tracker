@@ -1,1 +1,22 @@
-<p>dashboard works!</p>
+<div class="container">
+  <div class="dashboard-grid" *ngIf="!isLoading">
+    <div>
+      <mat-card><chart type="bar" [options]="priorityOptions" [data]="ticketsByPriority"></chart></mat-card>
+    </div>
+    <div>
+      <mat-card><chart type="bar" [options]="statusOptions" [data]="ticketsByStatus"></chart></mat-card>
+    </div>
+    <div>
+      <mat-card><chart type="pie" [options]="teamOptions" [data]="ticketsByTeam"></chart></mat-card>
+    </div>
+    <div>
+      <mat-card><chart type="pie" [options]="typeOptions" [data]="ticketsByType"></chart></mat-card>
+    </div>
+    <div>
+      <mat-card><chart type="line" [options]="openOptions" [data]="ticketsByDateOpen"></chart></mat-card>
+    </div>
+    <div>
+      <mat-card><chart type="line" [options]="closedOptions" [data]="ticketsByDateClosed"></chart></mat-card>
+    </div>
+  </div>
+</div>

@@ -11,6 +11,8 @@ const ticketSchema = mongoose.Schema({
   raisedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   createdOn: { type: Date, default: Date.now },
   status: { type: String, default: "OPEN" },
+  priority: { type: String, default: "" },
+  type: { type: String, default: "BUG" },
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment", required: false }],
   history: [{ type: mongoose.Schema.Types.ObjectId, ref: "TicketHistory", required: false }],
 });

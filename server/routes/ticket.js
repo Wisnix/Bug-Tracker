@@ -33,9 +33,10 @@ const storage = new GridFsStorage({
 const upload = multer({ storage: storage });
 
 //ROUTES
-router.get("/", checkAuth, (req, res, next) => {
-  const projectId = req.query.projectId;
-  let query = projectId ? { project: projectId } : {};
+router.get("/", (req, res, next) => {
+  const project = req.query.projectId;
+  const number = req.query.number;
+  let query = project && number ? { project, number } : project ? { project } : number ? { number } : {};
   Ticket.find(query).then((tickets) => {
     if (tickets) {
       res.status(200).json(tickets);
@@ -148,6 +149,8 @@ router.post("/", upload.array("files"), checkAuth, (req, res) => {
     project: req.body.project,
     team: req.body.team,
     assignedTo: req.body.assignedTo,
+    type: req.body.type,
+    priority: req.body.priority,
   });
 
   ticket
@@ -178,18 +181,14 @@ router.patch("/:id", checkAuth, (req, res, next) => {
         console.log(ticketHistory);
         return TicketHistory.insertMany(ticketHistory);
       } else {
-        throw new Error("Ticket with this id cannot be found.");
+        res.status(404).json({ message: "Ticket with this id cannot be found." });
       }
     })
     .then((ticketHistory) => {
-      return Ticket.findOneAndUpdate({ number: id }, { $push: { history: ticketHistory } });
+      if (ticketHistory) return Ticket.findOneAndUpdate({ number: id }, { $push: { history: ticketHistory } });
     })
     .then((updatedTicket) => {
-      if (updatedTicket) {
-        res.status(201).json({ message: "Ticket updated successfully." });
-      } else {
-        throw new Error("Ticket with this id cannot be found.");
-      }
+      if (updatedTicket) res.status(201).json({ message: "Ticket updated successfully." });
     })
     .catch((error) => {
       console.log(error);

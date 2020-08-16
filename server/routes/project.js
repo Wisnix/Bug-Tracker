@@ -46,6 +46,81 @@ router.get("/", checkAuth, (req, res, next) => {
   });
 });
 
+router.get("/:id/statistics", (req, res, next) => {
+  const id = req.params.id;
+  Ticket.aggregate([
+    {
+      $facet: {
+        categorizedByStatus: [
+          { $match: { project: mongoose.Types.ObjectId(id) } },
+          {
+            $group: {
+              _id: "$status",
+              count: { $sum: 1 },
+            },
+          },
+        ],
+        categorizedByType: [
+          { $match: { project: mongoose.Types.ObjectId(id) } },
+          {
+            $group: {
+              _id: "$type",
+              count: { $sum: 1 },
+            },
+          },
+        ],
+        categorizedByPriority: [
+          { $match: { project: mongoose.Types.ObjectId(id) } },
+          {
+            $group: {
+              _id: "$priority",
+              count: { $sum: 1 },
+            },
+          },
+        ],
+        categorizedByTeam: [
+          { $match: { project: mongoose.Types.ObjectId(id) } },
+          {
+            $group: {
+              _id: "$team",
+              count: { $sum: 1 },
+            },
+          },
+        ],
+        categorizedByDateOpen: [
+          { $match: { project: mongoose.Types.ObjectId(id), status: "OPEN" } },
+          {
+            $group: {
+              _id: { day: { $dayOfMonth: "$createdOn" }, month: { $month: "$createdOn" } },
+              count: { $sum: 1 },
+            },
+          },
+
+          { $sort: { "_id.month": 1, "_id.day": 1 } },
+        ],
+        categorizedByDateClosed: [
+          { $match: { project: mongoose.Types.ObjectId(id), status: "CLOSED" } },
+          {
+            $group: {
+              _id: { day: { $dayOfMonth: "$createdOn" }, month: { $month: "$createdOn" } },
+              count: { $sum: 1 },
+            },
+          },
+          { $sort: { "_id.month": 1 } },
+        ],
+      },
+    },
+  ])
+    .then((statistics) => {
+      return Team.populate(statistics, { path: "categorizedByTeam._id.team", select: "name" });
+    })
+    .then((statistics) => {
+      if (statistics) res.status(201).json(statistics[0]);
+      else res.status(404).json({ message: "Unable to obtain statistics" });
+    })
+    .catch((err) => res.status(500).json(err));
+});
+
 //NEW PROJECT
 router.post("/", checkAuth, (req, res, next) => {
   const teams = [];

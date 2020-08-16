@@ -59,6 +59,8 @@ export class NewTicketComponent implements OnInit {
       description: new FormControl("", [Validators.required]),
       team: new FormControl("", [Validators.required]),
       assignedTo: new FormControl("", [Validators.required]),
+      type: new FormControl("", [Validators.required]),
+      priority: new FormControl("", [Validators.required]),
       files: new FormArray([]),
     });
   }

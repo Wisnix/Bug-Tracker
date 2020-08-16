@@ -22,7 +22,7 @@
               {{ ticket.raisedBy?.firstName }} {{ ticket.raisedBy?.lastName }} <span class="email">{{ ticket.raisedBy?.email }}</span>
             </p>
           </div>
-          <hr />
+
           <div class="ticket-details-section">
             <p><span class="bold">Assigned to:</span></p>
             <p>{{ ticket.team?.name }}</p>
@@ -30,12 +30,20 @@
               {{ ticket.assignedTo?.firstName }} {{ ticket.assignedTo?.lastName }} <span class="email">{{ ticket.assignedTo?.email }}</span>
             </p>
           </div>
-          <hr />
+
           <div class="ticket-details-section">
             <p><span class="bold">Status:</span></p>
             <p>{{ ticket.status }}</p>
           </div>
-          <hr />
+          <div class="ticket-details-section">
+            <p><span class="bold">Type:</span></p>
+            <p>{{ ticket.type }}</p>
+          </div>
+          <div class="ticket-details-section">
+            <p><span class="bold">Priority:</span></p>
+            <p>{{ ticket.priority }}</p>
+          </div>
+
           <p><span class="bold">Attachments:</span></p>
           <ul *ngIf="ticket.files.length > 0; else elseBlock">
             <li *ngFor="let file of ticket.files">
@@ -43,7 +51,6 @@
             </li>
           </ul>
           <ng-template #elseBlock><p>This ticket does not have any files attached.</p></ng-template>
-          <hr />
         </div>
         <div class="comments">
           <p><span class="bold">Comments:</span></p>

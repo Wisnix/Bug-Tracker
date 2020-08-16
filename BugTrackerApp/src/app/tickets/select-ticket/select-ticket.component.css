@@ -57,6 +57,12 @@ li {
   grid-column: 6/9;
 }
 
+.ticket-details-section {
+  border-bottom: 1px solid;
+  margin-bottom: 10px;
+  border-bottom-color: rgb(197, 197, 197);
+}
+
 table[datatable] thead tr th {
   border-bottom: 1px solid #dddddd;
   color: #4e4e4e;

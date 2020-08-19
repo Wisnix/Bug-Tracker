@@ -13,14 +13,42 @@ const routes: Routes = [
     path: "",
     component: MainComponent,
     children: [
-      { path: "tickets", loadChildren: () => import("./tickets/tickets.module").then((m) => m.TicketsModule) },
-      { path: "projects", loadChildren: () => import("./projects/projects.module").then((m) => m.ProjectsModule) },
-      { path: "teams", loadChildren: () => import("./teams/teams.module").then((m) => m.TeamsModule) },
-      { path: "employees", loadChildren: () => import("./employees/employees.module").then((m) => m.EmployeesModule) },
-      { path: "dashboard", component: DashboardComponent },
+      {
+        path: "tickets",
+        loadChildren: () => import("./tickets/tickets.module").then((m) => m.TicketsModule),
+        canActivate: [AuthGuard],
+        canLoad: [AuthGuard],
+        data: { roles: ["all"] },
+      },
+      {
+        path: "projects",
+        loadChildren: () => import("./projects/projects.module").then((m) => m.ProjectsModule),
+        // canActivate: [AuthGuard],
+        // canLoad: [AuthGuard],
+        // data: { roles: ["admin", "project manager"] },
+      },
+      {
+        path: "teams",
+        loadChildren: () => import("./teams/teams.module").then((m) => m.TeamsModule),
+        // canActivate: [AuthGuard],
+        // canLoad: [AuthGuard],
+        // data: { roles: ["project manager"] },
+      },
+      {
+        path: "employees",
+        loadChildren: () => import("./employees/employees.module").then((m) => m.EmployeesModule),
+        // canActivate: [AuthGuard],
+        // canLoad: [AuthGuard],
+        // data: { roles: ["project manger"] },
+      },
+      {
+        path: "dashboard",
+        component: DashboardComponent,
+        canActivate: [AuthGuard],
+        canLoad: [AuthGuard],
+        data: { roles: ["project manager"] },
+      },
     ],
-    // to na dole se skomentowalem dla testowania zeby bylo latwej
-    // canActivate: [AuthGuard],
   },
 ];
 

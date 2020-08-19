@@ -40,7 +40,13 @@ router.post("/login", (req, res, next) => {
         return res.status(401).json({ message: "Authentication failed" });
       }
       const token = jwt.sign(
-        { email: fetchedUser.email, firstName: fetchedUser.firstName, userId: fetchedUser._id, role: fetchedUser.role },
+        {
+          email: fetchedUser.email,
+          firstName: fetchedUser.firstName,
+          userId: fetchedUser._id,
+          role: fetchedUser.role,
+          projectId: fetchedUser.team.project._id,
+        },
         "Super secret message only for development: Seals are like dogs but underwater dogs.",
         { expiresIn: "1h" }
       );

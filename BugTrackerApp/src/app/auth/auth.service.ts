@@ -21,7 +21,7 @@ export class AuthService {
   createUser(email: string, firstName: string, lastName: string, password: string) {
     const authData: AuthData = { email, firstName, lastName, password };
     this.http.post("http://localhost:5000/api/auth/signup", authData).subscribe((response) => {
-      console.log(response);
+      if (response) this.router.navigate(["/login"]);
     });
   }
 
@@ -62,6 +62,18 @@ export class AuthService {
 
   getIsAuth() {
     return this.isAuthenticated;
+  }
+
+  getProjectId() {
+    return this.loggedEmployee.team?.project._id;
+  }
+
+  hasRole(role: string) {
+    return this.isAuthenticated && this.loggedEmployee.role.toLowerCase() === role.toLowerCase();
+  }
+
+  isAdmin() {
+    return this.isAuthenticated && this.loggedEmployee.role.toLowerCase() === "admin";
   }
 
   private saveAuthData(token: string, expirationDate: Date, employee: Employee) {

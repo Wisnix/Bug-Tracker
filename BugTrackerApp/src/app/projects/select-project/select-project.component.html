@@ -45,7 +45,7 @@
       <div class="card-header card-header-lightblue">
         <p class="card-header-title-sm">
           Teams
-          <button mat-raised-button class="card-header-button" type="button">Manage Teams</button>
+          <button mat-raised-button class="card-header-button" type="button" (click)="onManageTeams()">Manage Teams</button>
         </p>
       </div>
       <div class="card-content">
@@ -67,7 +67,9 @@
     </mat-card>
     <mat-card>
       <div class="card-header card-header-lightblue">
-        <p class="card-header-title-sm">Employees <button mat-raised-button class="card-header-button" type="button">Manage Employees</button></p>
+        <p class="card-header-title-sm">
+          Employees <button mat-raised-button class="card-header-button" type="button" (click)="onManageEmployees()">Manage Employees</button>
+        </p>
       </div>
       <div class="card-content">
         <div>

@@ -5,22 +5,25 @@
       <p class="card-header-subtitle">All Tickets in your projects</p>
     </div>
     <div class="card-content">
-      <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border stripe hover">
-        <thead>
-          <tr>
-            <th>Ticket ID</th>
-            <th>Title</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let ticket of tickets" (click)="onSelectTicket(ticket.number)">
-            <td class="dt-body-center table-link">{{ ticket.number }}</td>
-            <td class="dt-body-center">{{ ticket.title }}</td>
-            <td class="dt-body-center">{{ ticket.status }}</td>
-          </tr>
-        </tbody>
-      </table>
+      <p *ngIf="!projectId; else elseBlock">You are not assigned to any project.</p>
+      <ng-template #elseBlock>
+        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border stripe hover">
+          <thead>
+            <tr>
+              <th>Ticket ID</th>
+              <th>Title</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let ticket of tickets" (click)="onSelectTicket(ticket.number)">
+              <td class="dt-body-center table-link">{{ ticket.number }}</td>
+              <td class="dt-body-center">{{ ticket.title }}</td>
+              <td class="dt-body-center">{{ ticket.status }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </ng-template>
     </div>
   </mat-card>
 </div>

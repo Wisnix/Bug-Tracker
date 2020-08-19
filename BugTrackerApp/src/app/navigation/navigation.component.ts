@@ -11,6 +11,7 @@ import { Router } from "@angular/router";
   styleUrls: ["./navigation.component.css"],
 })
 export class NavigationComponent implements OnInit {
+  isAdmin: boolean = false;
   userName: string;
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
     map((result) => result.matches),
@@ -21,6 +22,16 @@ export class NavigationComponent implements OnInit {
 
   ngOnInit() {
     this.userName = this.authService.loggedEmployee.firstName;
+    this.isAdmin = this.authService.isAdmin();
+  }
+
+  onMyProject() {
+    const projectId = this.authService.getProjectId();
+    if (projectId) {
+      this.router.navigate(["/projects", projectId]);
+    } else {
+      this.router.navigate(["/projects", "unassigned"]);
+    }
   }
 
   onLogout() {

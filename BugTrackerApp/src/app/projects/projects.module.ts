@@ -6,10 +6,11 @@ import { ProjectListComponent } from "./project-list/project-list.component";
 import { NewProjectComponent } from "./new-project/new-project.component";
 import { MatStepperModule } from "@angular/material/stepper";
 import { MatExpansionModule } from "@angular/material/expansion";
-import { SelectProjectComponent } from './select-project/select-project.component';
+import { SelectProjectComponent } from "./select-project/select-project.component";
+import { NotAssignedComponent } from './not-assigned/not-assigned.component';
 
 @NgModule({
-  declarations: [ProjectsComponent, ProjectListComponent, NewProjectComponent, SelectProjectComponent],
+  declarations: [ProjectsComponent, ProjectListComponent, NewProjectComponent, SelectProjectComponent, NotAssignedComponent],
   imports: [SharedModule, ProjectsRoutingModule, MatStepperModule, MatExpansionModule],
 })
 export class ProjectsModule {}

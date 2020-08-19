@@ -7,6 +7,7 @@ import { Subject, Subscription } from "rxjs";
 import { Employee } from "src/app/employees/employee.model";
 import { Ticket } from "src/app/tickets/ticket.model";
 import { Team } from "src/app/teams/team.model";
+import { AuthService } from "src/app/auth/auth.service";
 
 @Component({
   selector: "app-select-project",
@@ -14,6 +15,7 @@ import { Team } from "src/app/teams/team.model";
   styleUrls: ["./select-project.component.css"],
 })
 export class SelectProjectComponent implements OnInit, OnDestroy {
+  isAdmin: boolean;
   project: Project;
   employees: Employee[] = [];
   teams: Team[] = [];
@@ -23,9 +25,10 @@ export class SelectProjectComponent implements OnInit, OnDestroy {
   dtEmployeesOptions: DataTables.Settings = {};
   dtTicketsOptions: DataTables.Settings = {};
   dtTrigger = new Subject();
-  constructor(private route: ActivatedRoute, private projectService: ProjectService, private router: Router) {}
+  constructor(private route: ActivatedRoute, private projectService: ProjectService, private router: Router, private authService: AuthService) {}
 
   ngOnInit() {
+    this.isAdmin = this.authService.isAdmin();
     this.dtTeamsOptions = {
       autoWidth: false,
       info: false,
@@ -60,6 +63,22 @@ export class SelectProjectComponent implements OnInit, OnDestroy {
 
   onSelectTicket(ticketNumber: number) {
     this.router.navigate(["/tickets/", ticketNumber]);
+  }
+
+  onManageTeams() {
+    if (this.isAdmin) {
+      this.router.navigate(["teams"], { relativeTo: this.route });
+    } else {
+      this.router.navigate(["/teams"]);
+    }
+  }
+
+  onManageEmployees() {
+    if (this.isAdmin) {
+      this.router.navigate(["employees"], { relativeTo: this.route });
+    } else {
+      this.router.navigate(["/employees"]);
+    }
   }
 
   ngOnDestroy() {

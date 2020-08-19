@@ -8,6 +8,7 @@ import { AuthService } from "../auth/auth.service";
   styleUrls: ["./dashboard.component.css"],
 })
 export class DashboardComponent implements OnInit {
+  projectId: string;
   isLoading: boolean = true;
   ticketsByPriority = {
     labels: [],
@@ -111,10 +112,11 @@ export class DashboardComponent implements OnInit {
   constructor(private projectService: ProjectService, private authService: AuthService) {}
 
   ngOnInit(): void {
-    const id = this.authService.loggedEmployee.team.project._id;
-    this.projectService.getProjectStatistics(id).subscribe((statistics) => {
-      this.createCharts(statistics);
-    });
+    this.projectId = this.authService.getProjectId();
+    if (this.projectId)
+      this.projectService.getProjectStatistics(this.projectId).subscribe((statistics) => {
+        this.createCharts(statistics);
+      });
   }
   private createCharts(statistics: any) {
     const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -155,7 +157,6 @@ export class DashboardComponent implements OnInit {
     }
     this.isLoading = false;
   }
-
   private randomColor() {
     return "#" + Math.floor(Math.random() * 16777215).toString(16);
   }

@@ -27,9 +27,10 @@ import { MatCardModule } from "@angular/material/card";
 import { MatMenuModule } from "@angular/material/menu";
 import { ProjectsModule } from "./projects/projects.module";
 import { ChartModule } from "angular2-chartjs";
+import { HasRoleDirective } from "./shared/directives/has-role.directive";
 
 @NgModule({
-  declarations: [AppComponent, NavigationComponent, LoginComponent, MainComponent, SignupComponent, DashboardComponent],
+  declarations: [AppComponent, HasRoleDirective, NavigationComponent, LoginComponent, MainComponent, SignupComponent, DashboardComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

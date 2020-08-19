@@ -37,7 +37,7 @@ export class NewTicketComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.projectId = this.authService.loggedEmployee.team.project._id;
+    this.projectId = this.authService.getProjectId();
     this.teamsSubscription = this.teamService.getTeams(this.projectId).subscribe((teams) => {
       this.teams = teams;
       this.filteredTeams.next(this.teams.slice());

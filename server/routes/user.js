@@ -4,12 +4,9 @@ const User = require("../models/user");
 const Team = require("../models/team");
 const async = require("async");
 const checkAuth = require("../middleware/check-auth");
+const authorize = require("../middleware/authorization");
 
-// router.get("/:project", checkAuth, (req, res, next) => {
-//   console.log(req.body);
-// });
-
-router.get("/", checkAuth, (req, res, next) => {
+router.get("/", checkAuth, checkAuth, authorize("project manager", "admin"), (req, res, next) => {
   const searchQuery = req.query.searchQuery;
   const excludedIds = req.query.excludedIds;
   const unassigned = req.query.unassigned;
@@ -46,7 +43,7 @@ router.get("/", checkAuth, (req, res, next) => {
     });
 });
 
-router.patch("/", checkAuth, (req, res, next) => {
+router.patch("/", checkAuth, checkAuth, authorize("project manager", "admin"), (req, res, next) => {
   const employees = [];
   const updateQuery = req.body.update;
   const oldTeamsToUpdate = {};

@@ -1,17 +1,44 @@
 import { Injectable } from "@angular/core";
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from "@angular/router";
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router, CanLoad, Route } from "@angular/router";
 import { Observable } from "rxjs";
 import { AuthService } from "./auth.service";
 
 @Injectable({ providedIn: "root" })
-export class AuthGuard implements CanActivate {
+export class AuthGuard implements CanActivate, CanLoad {
   constructor(private authService: AuthService, private router: Router) {}
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
     const isAuth = this.authService.getIsAuth();
     if (!isAuth) {
       this.router.navigate(["/login"]);
+      return false;
     }
-    return isAuth;
+
+    const roles = route.data.roles;
+    if (roles && !roles.some((r) => this.authService.hasRole(r)) && !roles.some((e) => e === "all")) {
+      this.router.navigate(["/tickets"]);
+      return false;
+    }
+
+    return true;
+  }
+
+  canLoad(route: Route): Observable<boolean> | Promise<boolean> | boolean {
+    const isAuth = this.authService.getIsAuth();
+    if (!isAuth) {
+      this.router.navigate(["/login"]);
+      return false;
+    }
+
+    const roles = route.data.roles;
+    if (roles && !roles.some((r) => this.authService.hasRole(r)) && !roles.some((e) => e === "all")) {
+      this.router.navigate(["/tickets"]);
+      return false;
+    }
+
+    return true;
   }
 }

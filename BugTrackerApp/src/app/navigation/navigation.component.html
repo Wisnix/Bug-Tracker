@@ -15,11 +15,24 @@
     </mat-toolbar>
     <div class="divider"></div>
     <mat-nav-list id="nav-links">
-      <a mat-list-item routerLink="/dashboard" routerLinkActive="is-active" class="nav-link"> <mat-icon>dashboard</mat-icon>Dashboard</a>
-      <a mat-list-item routerLink="/employees" routerLinkActive="is-active" class="nav-link"> <mat-icon>person_add</mat-icon>Manage Users</a>
-      <a mat-list-item routerLink="/teams" routerLinkActive="is-active" class="nav-link"> <mat-icon>supervisor_account</mat-icon>Manage Teams</a>
-      <a mat-list-item routerLink="/projects" routerLinkActive="is-active" class="nav-link"> <mat-icon>assignment</mat-icon>Projects</a>
-      <a mat-list-item routerLink="/tickets" routerLinkActive="is-active" class="nav-link"> <mat-icon>chrome_reader_mode</mat-icon>Tickets</a>
+      <a mat-list-item routerLink="/dashboard" routerLinkActive="is-active" class="nav-link" *hasRole="['Project Manager']">
+        <mat-icon>dashboard</mat-icon>Dashboard</a
+      >
+      <a mat-list-item routerLink="/employees" routerLinkActive="is-active" class="nav-link" *hasRole="['Project Manager']">
+        <mat-icon>person_add</mat-icon>Manage Users</a
+      >
+      <a mat-list-item routerLink="/teams" routerLinkActive="is-active" class="nav-link" *hasRole="['Project Manager']">
+        <mat-icon>supervisor_account</mat-icon>Manage Teams</a
+      >
+      <a mat-list-item routerLinkActive="is-active" class="nav-link" *hasRole="['Project Manager']" (click)="onMyProject()">
+        <mat-icon>assignment</mat-icon>My Project</a
+      >
+      <a mat-list-item routerLink="/projects" routerLinkActive="is-active" class="nav-link" *hasRole="['Admin']">
+        <mat-icon>assignment</mat-icon>Manage Projects</a
+      >
+      <a mat-list-item routerLink="/tickets" routerLinkActive="is-active" class="nav-link" *hasRole="['Developer', 'Project Manager']">
+        <mat-icon>chrome_reader_mode</mat-icon>Tickets</a
+      >
       <a mat-list-item href="#" class="nav-link"> <mat-icon>settings</mat-icon>Settings</a>
     </mat-nav-list>
   </mat-sidenav>

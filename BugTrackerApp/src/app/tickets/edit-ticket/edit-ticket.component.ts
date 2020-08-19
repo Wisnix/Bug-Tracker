@@ -63,7 +63,7 @@ export class EditTicketComponent implements OnInit {
         this.filteredEmployees.next(this.employees.slice());
       });
     //Fetch teams
-    this.projectId = this.authService.loggedEmployee.team.project._id;
+    this.projectId = this.authService.getProjectId();
     this.teamsSubscription = this.teamService.getTeams(this.projectId).subscribe((teams) => {
       this.teams = teams;
       this.filteredTeams.next(this.teams.slice());

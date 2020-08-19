@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const checkAuth = require("../middleware/check-auth");
+const authorize = require("../middleware/authorization");
 const mongoose = require("mongoose");
 const Project = require("../models/project");
 const Team = require("../models/team");
@@ -8,7 +9,7 @@ const Ticket = require("../models/ticket");
 const Employee = require("../models/user");
 const async = require("async");
 
-router.get("/:id", checkAuth, (req, res, next) => {
+router.get("/:id", checkAuth, authorize("project manager", "admin"), (req, res, next) => {
   const id = req.params.id;
   let project = {};
   Project.findById(id)
@@ -26,7 +27,7 @@ router.get("/:id", checkAuth, (req, res, next) => {
     });
 });
 
-router.get("/:id/employees", checkAuth, (req, res, next) => {
+router.get("/:id/employees", checkAuth, authorize("project manager", "admin"), (req, res, next) => {
   const id = req.params.id;
   Team.find({ project: id })
     .populate("employees", "-password")
@@ -36,7 +37,7 @@ router.get("/:id/employees", checkAuth, (req, res, next) => {
     });
 });
 
-router.get("/", checkAuth, (req, res, next) => {
+router.get("/", checkAuth, authorize("admin"), (req, res, next) => {
   Project.find().then((projects) => {
     if (projects) {
       res.status(201).json(projects);
@@ -46,7 +47,7 @@ router.get("/", checkAuth, (req, res, next) => {
   });
 });
 
-router.get("/:id/statistics", (req, res, next) => {
+router.get("/:id/statistics", checkAuth, authorize("project manager"), (req, res, next) => {
   const id = req.params.id;
   Ticket.aggregate([
     {
@@ -112,7 +113,7 @@ router.get("/:id/statistics", (req, res, next) => {
     },
   ])
     .then((statistics) => {
-      return Team.populate(statistics, { path: "categorizedByTeam._id.team", select: "name" });
+      return Team.populate(statistics, { path: "categorizedByTeam._id", select: "name" });
     })
     .then((statistics) => {
       if (statistics) res.status(201).json(statistics[0]);
@@ -121,8 +122,7 @@ router.get("/:id/statistics", (req, res, next) => {
     .catch((err) => res.status(500).json(err));
 });
 
-//NEW PROJECT
-router.post("/", checkAuth, (req, res, next) => {
+router.post("/", checkAuth, authorize("admin"), (req, res, next) => {
   const teams = [];
   for (let team of req.body.project.teams) {
     teams.push(new Team(team));

@@ -19,7 +19,7 @@ export class TicketListComponent implements OnInit, OnDestroy {
   constructor(private ticketService: TicketService, private router: Router, private route: ActivatedRoute, private authService: AuthService) {}
 
   ngOnInit() {
-    this.projectId = this.authService.loggedEmployee.team?.project._id;
+    this.projectId = this.authService.getProjectId();
     //table options
     this.dtOptions = {
       autoWidth: false,

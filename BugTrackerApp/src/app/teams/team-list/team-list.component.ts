@@ -7,6 +7,7 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 import { MatDialog } from "@angular/material/dialog";
 import { ConfirmDialogComponent } from "src/app/shared/confirm-dialog/confirm-dialog.component";
 import { switchMap } from "rxjs/operators";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
   selector: "app-team-list",
@@ -22,14 +23,20 @@ export class TeamListComponent implements OnInit, OnDestroy {
   teamsSub: Subscription;
   teamName: string = "";
 
-  constructor(private authService: AuthService, private teamService: TeamService, private _snackBar: MatSnackBar, private dialog: MatDialog) {}
+  constructor(
+    private authService: AuthService,
+    private teamService: TeamService,
+    private _snackBar: MatSnackBar,
+    private dialog: MatDialog,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
     this.dtOptions = {
       autoWidth: false,
       pagingType: "full_numbers",
     };
-    this.projectId = this.authService.loggedEmployee.team?.project._id;
+    this.projectId = this.route.snapshot.params.id || this.authService.getProjectId();
     this.teamsSub = this.teamService.getTeams(this.projectId).subscribe((teams) => {
       this.teams = teams;
       this.dtTrigger.next();

@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const checkAuth = require("../middleware/check-auth");
+const authorize = require("../middleware/authorization");
 const Team = require("../models/team");
 const Ticket = require("../models/ticket");
 const Project = require("../models/project");
@@ -8,7 +9,8 @@ const async = require("async");
 const express = require("express");
 const router = express.Router();
 
-router.get("/", checkAuth, (req, res, next) => {
+// router.get("/", checkAuth, authorize("project manager", "admin"), (req, res, next) => {
+router.get("/", (req, res, next) => {
   const projectId = req.query.projectId;
   let query = projectId ? { project: projectId } : {};
   let teams;
@@ -44,7 +46,7 @@ router.get("/", checkAuth, (req, res, next) => {
     });
 });
 
-router.post("/", checkAuth, (req, res, next) => {
+router.post("/", checkAuth, authorize("project manager", "admin"), (req, res, next) => {
   const team = new Team({ name: req.body.teamName, project: req.body.projectId });
   team
     .save()
@@ -59,7 +61,7 @@ router.post("/", checkAuth, (req, res, next) => {
     });
 });
 
-router.delete("/:id", (req, res, next) => {
+router.delete("/:id", checkAuth, authorize("project manager", "admin"), (req, res, next) => {
   const id = req.params.id;
   let team;
   Team.findByIdAndDelete(id)
@@ -79,7 +81,7 @@ router.delete("/:id", (req, res, next) => {
     });
 });
 
-router.get("/:id/employees", checkAuth, (req, res, next) => {
+router.get("/:id/employees", checkAuth, authorize("project manager", "admin"), (req, res, next) => {
   const teamId = req.params.id;
   Employee.find({ team: teamId }, "_id firstName lastName email")
     .then((employees) => {

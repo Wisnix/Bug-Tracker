@@ -164,8 +164,4 @@ export class EmployeesTableComponent implements OnInit, OnDestroy {
     }
     this.selection.toggle(row);
   }
-  dupa() {
-    // console.log(this.paginator.pageIndex);
-    // console.log(this.selectedRows.length);
-  }
 }

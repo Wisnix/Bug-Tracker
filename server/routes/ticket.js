@@ -11,6 +11,7 @@ const Ticket = require("../models/ticket");
 const TicketHistory = require("../models/ticket-history");
 const Comment = require("../models/comment");
 const checkAuth = require("../middleware/check-auth");
+const authorize = require("../middleware/authorization");
 
 // INIT GFS
 let gfs;
@@ -33,7 +34,9 @@ const storage = new GridFsStorage({
 const upload = multer({ storage: storage });
 
 //ROUTES
-router.get("/", (req, res, next) => {
+
+//all tickets
+router.get("/", checkAuth, authorize("all"), (req, res, next) => {
   const project = req.query.projectId;
   const number = req.query.number;
   let query = project && number ? { project, number } : project ? { project } : number ? { number } : {};
@@ -46,7 +49,8 @@ router.get("/", (req, res, next) => {
   });
 });
 
-router.get("/:id", checkAuth, (req, res, next) => {
+//ticket by id
+router.get("/:id", checkAuth, authorize("all"), (req, res, next) => {
   const id = req.params.id;
   let ticket = {};
   Ticket.findOne({ number: id })
@@ -77,7 +81,7 @@ router.get("/:id", checkAuth, (req, res, next) => {
 });
 
 //new comment
-router.post("/:id/comments", checkAuth, (req, res, next) => {
+router.post("/:id/comments", checkAuth, authorize("all"), (req, res, next) => {
   const ticketId = req.params.id;
   const content = req.body.comment;
   const userId = req.userData.userId;
@@ -117,7 +121,7 @@ router.post("/:id/comments", checkAuth, (req, res, next) => {
 });
 
 //download file
-router.get("/:id/files/:fileId", checkAuth, (req, res, next) => {
+router.get("/:id/files/:fileId", checkAuth, authorize("all"), (req, res, next) => {
   const fileId = req.params.fileId;
   gfs.find({ _id: mongoose.Types.ObjectId(fileId) }).toArray((err, files) => {
     let file = files[0];
@@ -136,7 +140,7 @@ router.get("/:id/files/:fileId", checkAuth, (req, res, next) => {
 });
 
 //new ticket
-router.post("/", upload.array("files"), checkAuth, (req, res) => {
+router.post("/", upload.array("files"), checkAuth, authorize("all"), (req, res) => {
   const files = [];
   for (let file of req.files) {
     files.push(file.id);
@@ -165,7 +169,7 @@ router.post("/", upload.array("files"), checkAuth, (req, res) => {
 });
 
 //update ticket
-router.patch("/:id", checkAuth, (req, res, next) => {
+router.patch("/:id", checkAuth, authorize("all"), (req, res, next) => {
   const id = req.params.id;
   const uderId = req.userData.userId;
   const changes = req.body.changes;

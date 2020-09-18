@@ -10,7 +10,7 @@ body {
 }
 
 /* =========================== */
-/* LAYOUR SECTION */
+/* LAYOUT SECTION */
 /* =========================== */
 
 .container {
@@ -31,6 +31,11 @@ body {
 
 .green-button {
   background: #5cb85c;
+  color: #fff;
+}
+
+.yellow-button {
+  background: #f1c40f;
   color: #fff;
 }
 

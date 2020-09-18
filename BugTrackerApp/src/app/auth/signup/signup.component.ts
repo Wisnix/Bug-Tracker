@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { AuthService } from "../auth.service";
+import { ActivatedRoute, Router } from "@angular/router";
 
 @Component({
   selector: "app-signup",
@@ -10,10 +11,16 @@ import { AuthService } from "../auth.service";
 export class SignupComponent implements OnInit {
   isLoading: boolean = false;
   hide: boolean = true;
+  signupError: string;
+  constructor(private authService: AuthService, private route: ActivatedRoute, private router: Router) {}
 
-  constructor(private authService: AuthService) {}
-
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.route.queryParams.subscribe((params) => {
+      if (params.signupError) {
+        this.signupError = "User with this email already exists";
+      }
+    });
+  }
 
   onSignup(form: NgForm) {
     if (form.invalid) return;

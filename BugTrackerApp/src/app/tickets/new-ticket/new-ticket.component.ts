@@ -66,8 +66,6 @@ export class NewTicketComponent implements OnInit {
   }
 
   onNewTicket() {
-    console.log(this.ticketForm.valid);
-    console.log(this.ticketForm.value);
     if (this.ticketForm.valid)
       this.ticketService.createTicket(this.ticketForm.value).subscribe((res) => {
         if (res.ticket) {
@@ -88,7 +86,6 @@ export class NewTicketComponent implements OnInit {
     this.files.push(...event.addedFiles);
   }
   onRemove(event) {
-    console.log(event);
     this.files.splice(this.files.indexOf(event), 1);
     let formArray = <FormArray>this.ticketForm.get("files");
     formArray.clear();

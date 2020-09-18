@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { AuthService } from "../auth.service";
+import { ActivatedRoute, Router } from "@angular/router";
 
 @Component({
   selector: "app-login",
@@ -9,10 +10,22 @@ import { AuthService } from "../auth.service";
 })
 export class LoginComponent implements OnInit {
   isLoading: boolean = false;
+  loginError: string;
+  signupMessage: string;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private route: ActivatedRoute, private router: Router) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.route.queryParams.subscribe((params) => {
+      if (params.loginError) {
+        this.loginError = "Wrong username or password.";
+      }
+      if (params.signup) {
+        console.log("dupa");
+        this.signupMessage = "User successfully created.";
+      }
+    });
+  }
 
   onLogin(form: NgForm) {
     if (form.invalid) return;

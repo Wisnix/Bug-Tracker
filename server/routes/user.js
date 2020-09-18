@@ -5,8 +5,9 @@ const Team = require("../models/team");
 const async = require("async");
 const checkAuth = require("../middleware/check-auth");
 const authorize = require("../middleware/authorization");
+const bcrypt = require("bcrypt");
 
-router.get("/", checkAuth, checkAuth, authorize("project manager", "admin"), (req, res, next) => {
+router.get("/", checkAuth, authorize("project manager", "admin"), (req, res, next) => {
   const searchQuery = req.query.searchQuery;
   const excludedIds = req.query.excludedIds;
   const unassigned = req.query.unassigned;
@@ -43,7 +44,7 @@ router.get("/", checkAuth, checkAuth, authorize("project manager", "admin"), (re
     });
 });
 
-router.patch("/", checkAuth, checkAuth, authorize("project manager", "admin"), (req, res, next) => {
+router.patch("/", checkAuth, authorize("project manager", "admin"), (req, res, next) => {
   const employees = [];
   const updateQuery = req.body.update;
   const oldTeamsToUpdate = {};
@@ -77,4 +78,17 @@ router.patch("/", checkAuth, checkAuth, authorize("project manager", "admin"), (
     });
 });
 
+router.patch("/:id", checkAuth, async (req, res, next) => {
+  const id = req.params.id;
+  const updateQuery = req.body.updateQuery;
+  if (req.userData.userId === id) {
+    if (updateQuery.password) updateQuery.password = await bcrypt.hash(updateQuery.password, 10);
+    User.findByIdAndUpdate(id, updateQuery, { new: true }).then((updatedUser) => {
+      if (updatedUser) res.status(200).json(updatedUser);
+      else res.status(404).json({ message: "User not found" });
+    });
+  } else {
+    res.status(401).json({ message: "You are not authorized to edit this user." });
+  }
+});
 module.exports = router;

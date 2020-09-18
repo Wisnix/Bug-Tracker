@@ -5,6 +5,7 @@ import { EmployeeService } from "src/app/employees/employee.service";
 import { Employee } from "src/app/employees/employee.model";
 import { Subscription } from "rxjs";
 import { SlowBuffer } from "buffer";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 @Component({
   selector: "app-new-project",
@@ -18,13 +19,12 @@ export class NewProjectComponent implements OnInit {
   assignedEmployees: [Employee[]] = [[]];
   excludedIds: string[] = [];
   projectForm: FormGroup;
-  constructor(private projectService: ProjectService, private employeeService: EmployeeService) {}
+  constructor(private projectService: ProjectService, private employeeService: EmployeeService, private _snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     this.initForm();
     this.employeesSub = this.employeeService.findEmployees("", "", "true").subscribe((employees) => {
       this.employees = employees;
-      console.log(employees);
       this.filteredEmployees[0] = [...employees];
     });
   }
@@ -57,8 +57,13 @@ export class NewProjectComponent implements OnInit {
           teams[i].employees.push({ _id: assignedEmployees[j]._id, role: assignedEmployees[j].role });
         }
       }
-      console.log(this.projectForm.value);
-      this.projectService.createProject(this.projectForm.value);
+      this.projectService.createProject(this.projectForm.value).subscribe(({ message, project }) => {
+        this._snackBar.open("Ticket created sucessfully", "", {
+          duration: 2000,
+          verticalPosition: "top",
+          panelClass: "snackbar-success",
+        });
+      });
     }
   }
   onAddTeam() {
@@ -105,21 +110,11 @@ export class NewProjectComponent implements OnInit {
       emps.push(employee);
     }
   }
-  print() {
-    console.log(this.filteredEmployees);
-  }
-  test() {
-    //button
-    console.log(<FormArray>this.projectForm.get("teams").value);
-  }
 
   onExpansionPanelOpened() {
     this.filteredEmployees.push([...this.employees]);
   }
   onExpansionPanelClosed(teamIndex) {
     this.filteredEmployees.splice(teamIndex, 1);
-  }
-  onChangeEmployeeRole(teamIndex, assignedEmployeeIndex, selectRole) {
-    console.log(selectRole);
   }
 }

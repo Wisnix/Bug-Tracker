@@ -21,11 +21,6 @@ export class ProjectService {
   }
 
   createProject(project: Project) {
-    this.http
-      .post<{ message: String; project: Project }>("http://localhost:5000/api/projects", { project })
-      .subscribe(({ message, project }) => {
-        console.log(message);
-        console.log(project);
-      });
+    return this.http.post<{ message: String; project: Project }>("http://localhost:5000/api/projects", { project });
   }
 }

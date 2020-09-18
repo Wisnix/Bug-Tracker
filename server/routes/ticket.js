@@ -110,8 +110,6 @@ router.post("/:id/comments", checkAuth, authorize("all"), (req, res, next) => {
       return ticketHistory.populate({ path: "changedBy", select: "firstName lastName" }).execPopulate();
     })
     .then((ticketHistory) => {
-      console.log(comment);
-      console.log(ticketHistory);
       res.status(201).json({ message: "Ticket added successfully.", comment, ticketHistory });
     })
     .catch((error) => {
@@ -125,7 +123,6 @@ router.get("/:id/files/:fileId", checkAuth, authorize("all"), (req, res, next) =
   const fileId = req.params.fileId;
   gfs.find({ _id: mongoose.Types.ObjectId(fileId) }).toArray((err, files) => {
     let file = files[0];
-    console.log(file);
     if (err) {
       return res.status(404).json(err);
     } else if (!file) {
@@ -182,7 +179,6 @@ router.patch("/:id", checkAuth, authorize("all"), (req, res, next) => {
   Ticket.findOneAndUpdate({ number: id }, updateQuery)
     .then((updatedTicket) => {
       if (updatedTicket) {
-        console.log(ticketHistory);
         return TicketHistory.insertMany(ticketHistory);
       } else {
         res.status(404).json({ message: "Ticket with this id cannot be found." });

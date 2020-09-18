@@ -47,7 +47,7 @@
           <p><span class="bold">Attachments:</span></p>
           <ul *ngIf="ticket.files.length > 0; else elseBlock">
             <li *ngFor="let file of ticket.files">
-              {{ file.filename }}<mat-icon class="downloadLink" (click)="onDownloadFile(file._id)">archive</mat-icon>
+              {{ file.filename }}<mat-icon class="downloadLink" (click)="onDownloadFile(file._id, file.filename)">archive</mat-icon>
             </li>
           </ul>
           <ng-template #elseBlock><p>This ticket does not have any files attached.</p></ng-template>

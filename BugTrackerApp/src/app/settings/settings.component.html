@@ -1,0 +1,46 @@
+<div class="container">
+  <mat-card class="card">
+    <div class="card-header card-header-purple">
+      <h3 class="card-header-title">Settings</h3>
+    </div>
+    <div class="card-content">
+      <div class="personal-details">
+        <form [formGroup]="detailsForm" (ngSubmit)="onSubmitDetails()">
+          <div>
+            First name:
+            <mat-form-field class="example-full-width">
+              <input matInput formControlName="firstName" />
+            </mat-form-field>
+            Last name:
+            <mat-form-field class="example-full-width">
+              <input matInput formControlName="lastName" />
+            </mat-form-field>
+            Email:
+            <mat-form-field class="example-full-width">
+              <input matInput formControlName="email" />
+            </mat-form-field>
+            <button mat-raised-button class="yellow-button" *ngIf="changeDetails">Submit</button>
+            <button type="button" mat-raised-button (click)="onEditDetails()">{{ changeDetails ? "Cancel" : "Edit" }}</button>
+          </div>
+        </form>
+        <form [formGroup]="passwordForm" *ngIf="changePassword" (ngSubmit)="onSubmitPassword()">
+          <div>
+            New password:
+            <mat-form-field class="example-full-width">
+              <input type="password" matInput placeholder="" formControlName="password" />
+            </mat-form-field>
+            Re-type password:
+            <mat-form-field class="example-full-width">
+              <input type="password" matInput placeholder="" formControlName="retypePassword" />
+            </mat-form-field>
+            <button class="yellow-button" mat-raised-button>Submit</button>
+            <mat-error *ngIf="passwordsInvalid">Passwords must match</mat-error>
+          </div>
+        </form>
+        <button mat-raised-button (click)="onEditPassword()">
+          {{ changePassword ? "Cancel" : "Change password" }}
+        </button>
+      </div>
+    </div>
+  </mat-card>
+</div>

@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Employee } from "./employee.model";
 import { Team } from "../teams/team.model";
+import { Observable } from "rxjs";
 
 @Injectable({ providedIn: "root" })
 export class EmployeeService {
@@ -38,5 +39,8 @@ export class EmployeeService {
   }
   updateEmployees(employees: Employee[], update: {}) {
     return this.http.patch<Employee[]>("http://localhost:5000/api/users", { employees, update });
+  }
+  updateEmployee(id: string, update: {}) {
+    return this.http.patch<Employee>(`http://localhost:5000/api/users/${id}`, { updateQuery: update });
   }
 }

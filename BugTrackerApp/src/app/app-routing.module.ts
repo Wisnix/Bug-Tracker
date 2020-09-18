@@ -5,6 +5,7 @@ import { MainComponent } from "./main/main.component";
 import { SignupComponent } from "./auth/signup/signup.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { AuthGuard } from "./auth/auth.guard";
+import { SettingsComponent } from "./settings/settings.component";
 
 const routes: Routes = [
   { path: "login", component: LoginComponent },
@@ -23,23 +24,23 @@ const routes: Routes = [
       {
         path: "projects",
         loadChildren: () => import("./projects/projects.module").then((m) => m.ProjectsModule),
-        // canActivate: [AuthGuard],
-        // canLoad: [AuthGuard],
-        // data: { roles: ["admin", "project manager"] },
+        canActivate: [AuthGuard],
+        canLoad: [AuthGuard],
+        data: { roles: ["admin", "project manager"] },
       },
       {
         path: "teams",
         loadChildren: () => import("./teams/teams.module").then((m) => m.TeamsModule),
-        // canActivate: [AuthGuard],
-        // canLoad: [AuthGuard],
-        // data: { roles: ["project manager"] },
+        canActivate: [AuthGuard],
+        canLoad: [AuthGuard],
+        data: { roles: ["project manager"] },
       },
       {
         path: "employees",
         loadChildren: () => import("./employees/employees.module").then((m) => m.EmployeesModule),
-        // canActivate: [AuthGuard],
-        // canLoad: [AuthGuard],
-        // data: { roles: ["project manger"] },
+        canActivate: [AuthGuard],
+        canLoad: [AuthGuard],
+        data: { roles: ["project manger"] },
       },
       {
         path: "dashboard",
@@ -47,6 +48,13 @@ const routes: Routes = [
         canActivate: [AuthGuard],
         canLoad: [AuthGuard],
         data: { roles: ["project manager"] },
+      },
+      {
+        path: "settings",
+        component: SettingsComponent,
+        canActivate: [AuthGuard],
+        canLoad: [AuthGuard],
+        data: { roles: ["all"] },
       },
     ],
   },

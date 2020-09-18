@@ -30,7 +30,6 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
       });
       this.unassignedEmployeesSub = this.employeeService.findEmployees("", "", "true").subscribe((unassignedEmployees) => {
         this.unassignedEmployees = unassignedEmployees;
-        console.log(unassignedEmployees);
       });
     }
   }

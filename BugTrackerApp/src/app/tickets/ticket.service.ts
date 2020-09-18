@@ -23,7 +23,7 @@ export class TicketService {
   }
 
   getFile(number: number, fileName: String) {
-    // this.http.get(`http://localhost:5000/api/tickets/${number}/files/${fileName}`).subscribe();
+    return this.http.get(`http://localhost:5000/api/tickets/${number}/files/${fileName}`, { responseType: "blob" });
   }
 
   createTicket(ticket) {

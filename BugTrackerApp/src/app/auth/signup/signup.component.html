@@ -1,6 +1,7 @@
 <div class="signup-container">
   <div class="login-container">
     <h2 class="mat-display-2">Sign up</h2>
+    <mat-error *ngIf="signupError">{{ signupError }}</mat-error>
     <mat-spinner *ngIf="isLoading"></mat-spinner>
 
     <form class="example-form" (submit)="onSignup(signupForm)" #signupForm="ngForm">

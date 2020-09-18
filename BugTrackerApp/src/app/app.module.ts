@@ -15,7 +15,7 @@ import { NavigationComponent } from "./navigation/navigation.component";
 import { LoginComponent } from "./auth/login/login.component";
 import { MatInputModule } from "@angular/material/input";
 import { MatFormFieldModule } from "@angular/material/form-field";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MainComponent } from "./main/main.component";
 import { SignupComponent } from "./auth/signup/signup.component";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
@@ -28,9 +28,19 @@ import { MatMenuModule } from "@angular/material/menu";
 import { ProjectsModule } from "./projects/projects.module";
 import { ChartModule } from "angular2-chartjs";
 import { HasRoleDirective } from "./shared/directives/has-role.directive";
+import { SettingsComponent } from "./settings/settings.component";
 
 @NgModule({
-  declarations: [AppComponent, HasRoleDirective, NavigationComponent, LoginComponent, MainComponent, SignupComponent, DashboardComponent],
+  declarations: [
+    AppComponent,
+    HasRoleDirective,
+    NavigationComponent,
+    LoginComponent,
+    MainComponent,
+    SignupComponent,
+    DashboardComponent,
+    SettingsComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -45,6 +55,7 @@ import { HasRoleDirective } from "./shared/directives/has-role.directive";
     MatInputModule,
     MatProgressSpinnerModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     TicketsModule,
     ProjectsModule,

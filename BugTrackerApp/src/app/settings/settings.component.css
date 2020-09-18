@@ -1,0 +1,17 @@
+.personal-details {
+  display: inline-block;
+}
+.personal-details button {
+  margin-left: 15px;
+}
+
+.profile-image {
+  border-radius: 50%;
+  width: 150px;
+}
+
+mat-form-field {
+  margin-left: 10px;
+  margin-right: 10px;
+  width: 150px;
+}

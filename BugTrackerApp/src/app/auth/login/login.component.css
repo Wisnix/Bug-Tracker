@@ -59,3 +59,11 @@ h2.mat-display-2 {
 .underline {
   text-decoration: underline;
 }
+mat-error {
+  text-align: center;
+}
+
+.signup-message {
+  text-align: center;
+  color: #2ecc71;
+}

@@ -73,11 +73,7 @@
                         <mat-icon mat-list-icon (click)="onDeleteEmployeeFromTeam(employee, teamIndex, assignedEmployeeIndex)">clear</mat-icon>
                         {{ employee.firstName }} {{ employee.lastName }} <span class="email">{{ employee.email }}</span>
                         <mat-form-field class="select-role">
-                          <mat-select
-                            (selectionChange)="onChangeEmployeeRole(teamIndex, assignedEmployeeIndex, selectRole)"
-                            [(value)]="employee.role"
-                            #selectRole
-                          >
+                          <mat-select [(value)]="employee.role" #selectRole>
                             <mat-option value="Developer" selected>Developer</mat-option>
                             <mat-option value="Tester">Tester</mat-option>
                             <mat-option value="Project Manager">Project Manager</mat-option>

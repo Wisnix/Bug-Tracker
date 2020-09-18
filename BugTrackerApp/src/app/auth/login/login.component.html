@@ -1,7 +1,7 @@
 <div class="main-login-container">
   <div class="login-container">
     <h2 class="mat-display-2">Log in</h2>
-
+    <p *ngIf="signupMessage" class="signup-message">{{ signupMessage }}</p>
     <form class="example-form" (submit)="onLogin(loginForm)" #loginForm="ngForm">
       <mat-form-field class="form-input">
         <mat-label>Email</mat-label>
@@ -16,23 +16,23 @@
       <button mat-flat-button type="submit" *ngIf="!isLoading">Log in</button>
       <mat-spinner *ngIf="isLoading"></mat-spinner>
     </form>
-
+    <mat-error>{{ loginError }}</mat-error>
     <div class="login-links">
-      <ul>
+      <!-- <ul>
         <li>
           <a href="">Forgot your <span class="underline">password?</span></a>
         </li>
-      </ul>
+      </ul> -->
       <ul>
         <li>
           <a routerLink="/signup">Don't have an account? <span class="underline">Sign up</span></a>
         </li>
       </ul>
-      <ul>
+      <!-- <ul>
         <li>
           <a href="">Sign in as <span class="underline">Demo User</span></a>
         </li>
-      </ul>
+      </ul> -->
     </div>
   </div>
 </div>

@@ -97,7 +97,6 @@ export class EmployeesTableComponent implements OnInit, OnDestroy {
       )
       .subscribe((response) => {
         event.source.value = "";
-        console.log(response);
         if (response) {
           let assignedEmployees = [];
           let unassignedEmployees = [];

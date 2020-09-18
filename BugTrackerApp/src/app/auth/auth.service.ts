@@ -5,12 +5,14 @@ import { Router } from "@angular/router";
 import { Timestamp } from "rxjs/internal/operators/timestamp";
 import { Project } from "../projects/project.model";
 import { Employee } from "../employees/employee.model";
+import { Subject } from "rxjs";
 
 @Injectable({ providedIn: "root" })
 export class AuthService {
   private tokenTimer: any;
   private isAuthenticated: boolean;
   loggedEmployee: Employee;
+  loggedEmployeeUpdated = new Subject<Employee>();
   private token: string;
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -20,28 +22,38 @@ export class AuthService {
 
   createUser(email: string, firstName: string, lastName: string, password: string) {
     const authData: AuthData = { email, firstName, lastName, password };
-    this.http.post("http://localhost:5000/api/auth/signup", authData).subscribe((response) => {
-      if (response) this.router.navigate(["/login"]);
-    });
+    this.http.post("http://localhost:5000/api/auth/signup", authData).subscribe(
+      (response) => {
+        if (response) this.router.navigate(["/login"], { queryParams: { signup: true } });
+      },
+      (err) => {
+        this.router.navigate(["/signup"], { queryParams: { signupError: true } });
+      }
+    );
   }
 
   login(email: string, password: string) {
     this.http
       .post<{ token: string; expiresIn: number; user: Employee }>("http://localhost:5000/api/auth/login", { email, password })
-      .subscribe((response) => {
-        const token = response.token;
-        this.token = token;
-
-        if (token) {
-          const expiresInDuration = response.expiresIn;
-          this.setAuthTimer(expiresInDuration);
-          this.isAuthenticated = true;
-          this.loggedEmployee = response.user;
-          this.router.navigate(["/"]);
-          const expirationDate = new Date(new Date().getTime() + expiresInDuration * 1000);
-          this.saveAuthData(token, expirationDate, this.loggedEmployee);
+      .subscribe(
+        (response) => {
+          const token = response.token;
+          this.token = token;
+          console.log("dupa");
+          if (token) {
+            const expiresInDuration = response.expiresIn;
+            this.setAuthTimer(expiresInDuration);
+            this.isAuthenticated = true;
+            this.loggedEmployee = response.user;
+            this.router.navigate(["/"]);
+            const expirationDate = new Date(new Date().getTime() + expiresInDuration * 1000);
+            this.saveAuthData(token, expirationDate, this.loggedEmployee);
+          }
+        },
+        (err) => {
+          this.router.navigate(["/login"], { queryParams: { loginError: true } });
         }
-      });
+      );
   }
 
   private setAuthTimer(expiresInDuration: number) {
@@ -115,5 +127,11 @@ export class AuthService {
       expirationDate: new Date(expirationDate),
       employee,
     };
+  }
+
+  updateLoggedEmployee(employee: Employee) {
+    localStorage.setItem("loggedEmployee", JSON.stringify(employee));
+    this.loggedEmployee = employee;
+    this.loggedEmployeeUpdated.next(employee);
   }
 }

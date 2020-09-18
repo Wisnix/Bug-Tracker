@@ -5,6 +5,7 @@ import { TicketService } from "../ticket.service";
 import { Subscription, Subject } from "rxjs";
 import { switchMap } from "rxjs/operators";
 import { FormControl } from "@angular/forms";
+import { saveAs } from "file-saver";
 
 @Component({
   selector: "app-select-ticket",
@@ -43,9 +44,11 @@ export class SelectTicketComponent implements OnInit, OnDestroy {
     this.ticketSub.unsubscribe();
   }
 
-  onDownloadFile(fileId: String) {
-    // this.ticketService.getFile(this.ticket.number, fileId);
-    console.log("To narazie nie dziala, fileID:" + fileId);
+  onDownloadFile(fileId: string, fileName: string) {
+    this.ticketService.getFile(this.ticket.number, fileId).subscribe((res) => {
+      var blob = new Blob([res], { type: res.type });
+      saveAs(blob, fileName);
+    });
   }
 
   onNewComment() {

@@ -122,15 +122,6 @@ export class EditTicketComponent implements OnInit {
     }
     this.filteredEmployees.next(this.employeeService.filterEmployeesArray(this.employees, search));
   }
-<<<<<<< HEAD
-  test() {
-    // console.log(this.ticketForm.value);
-    console.log(this.ticket.number);
-    // console.log(this.teams[0]);
-    // console.log(this.ticket.team === this.teams[0]);
-  }
-=======
->>>>>>> 640ba1a... Add signup/login messages, add settings page, fix file download
 
   onEditTicket() {
     const changes = [];

@@ -40,7 +40,7 @@ const routes: Routes = [
         loadChildren: () => import("./employees/employees.module").then((m) => m.EmployeesModule),
         canActivate: [AuthGuard],
         canLoad: [AuthGuard],
-        data: { roles: ["project manger"] },
+        data: { roles: ["project manager"] },
       },
       {
         path: "dashboard",
